@@ -51,9 +51,7 @@ import handleValidationErrors from "./utils/handleValidationErrors.js";
 
 // -- Подключене к БД
 mongoose
-  .connect(
-    "mongodb+srv://admin:12345@cluster0.kalpivn.mongodb.net/blog?retryWrites=true"
-  )
+  .connect(process.env.MONGODB_URI)
   .then(() => {
     console.log("Successful connection to the database");
   })
@@ -199,7 +197,7 @@ app.get("/users", checkAuth, getUsers); // -- получить всех поль
 app.delete("/users/delete/:id", checkAuth, deleteUser); // -- удалить пользователя
 
 // -- Прослушка сервера
-app.listen(4444, (err) => {
+app.listen(process.env.PORT || 4444, (err) => {
   if (err) {
     return console.log(err);
   }
