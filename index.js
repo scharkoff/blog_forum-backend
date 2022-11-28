@@ -2,6 +2,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import multer from "multer";
+import fs from "fs";
 
 // -- CORS
 import cors from "cors";
@@ -72,6 +73,9 @@ app.use("/uploads", express.static("uploads")); // -- GET запрос на по
 // -- Multer storage
 const storage = multer.diskStorage({
   destination: (__, _, cb) => {
+    if (fs.existsSync("uploads")) {
+      fs.mkdirSync("uploads");
+    }
     cb(null, "uploads");
   },
   filename: (_, file, cb) => {
