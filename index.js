@@ -1,204 +1,47 @@
 // -- Плагины
 import express from "express";
-import mongoose from "mongoose";
-import multer from "multer";
-import fs from "fs";
 
 // -- CORS
 import cors from "cors";
 
-// -- Валидации
-import {
-  registerValidation,
-  loginValidation,
-  postCreateValidation,
-  fullNameValidation,
-  passwordValidation,
-  emailValidation,
-  avatarValidation,
-} from "./validations/validations.js";
+// -- Теги
+import { getLastTags } from "./controllers/PostController.js";
 
-// -- Контроллеры
-import {
-  register,
-  login,
-  getMe,
-  updateUserLogin,
-  updateUserEmail,
-  updateUserPassword,
-  updateUserAvatar,
-  getUsers,
-  deleteUser,
-  updateUserRank,
-} from "./controllers/UserController.js";
-import {
-  create,
-  getAll,
-  getOne,
-  remove,
-  update,
-  getLastTags,
-} from "./controllers/PostController.js";
-import {
-  addComment,
-  getAllComments,
-  removeComment,
-  updateComment,
-} from "./controllers/CommentController.js";
+// -- CRUDs
+import { auth } from "./cruds/auth.js";
+import { users } from "./cruds/users.js";
+import { comments } from "./cruds/comments.js";
+import { posts } from "./cruds/posts.js";
 
-// -- Посредники
-import checkAuth from "./utils/checkAuth.js";
-import handleValidationErrors from "./utils/handleValidationErrors.js";
+// -- Utils
+import { multerUploads } from "./utils/multer.js";
 
-// -- Подключене к БД
-mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(() => {
-    console.log("Successful connection to the database");
-  })
-  .catch((err) => {
-    console.log(err, "Connect error");
-  });
+// -- Подключение к БД
+import { getConnection } from "./config.js";
+getConnection();
 
 // -- Express app
-const app = express();
+export const app = express();
 app.use(express.json());
-
-// -- Отключение CORS чтобы не ругался
 app.use(cors());
 
-// -- Доступ к картинке
-app.use("/uploads", express.static("uploads")); // -- GET запрос на получение статичного файла по его названию (с расширением)
+// -- Загрузка картинок (multer)
+multerUploads();
 
-// -- Multer storage
-const storage = multer.diskStorage({
-  destination: (__, _, cb) => {
-    if (fs.existsSync("uploads")) {
-      fs.mkdirSync("uploads");
-    }
-    cb(null, "uploads");
-  },
-  filename: (_, file, cb) => {
-    cb(null, file.originalname);
-  },
-});
+// -- Авторазиция и регистрация в приложении
+auth();
 
-const upload = multer({ storage });
+// -- CRUD для пользователей (админка)
+users();
 
-// -- Загрузить файл картинку
-app.post("/upload", checkAuth, upload.single("image"), (req, res) => {
-  return res.json({
-    url: `/uploads/${req.file.originalname}`,
-  });
-});
+// -- CRUD для комментариев
+comments();
 
-// -- Авторизация пользователей
-app.post("/auth/login", loginValidation, handleValidationErrors, login);
+// -- CRUD для постов
+posts();
 
-// -- Регистрация пользователей
-app.post(
-  "/auth/register",
-  registerValidation,
-  handleValidationErrors,
-  register
-);
-
-// -- === CRUD для пользателей: обновить информацию пользователя ===
-// -- Обновить логин пользователя
-app.patch(
-  "/auth/updateUserLogin",
-  checkAuth,
-  fullNameValidation,
-  handleValidationErrors,
-  updateUserLogin
-);
-
-// -- Обновить почту пользователя
-app.patch(
-  "/auth/updateUserEmail",
-  checkAuth,
-  emailValidation,
-  handleValidationErrors,
-  updateUserEmail
-);
-
-// -- Обновить пароль пользователя
-app.patch(
-  "/auth/updateUserPassword",
-  checkAuth,
-  passwordValidation,
-  handleValidationErrors,
-  updateUserPassword
-);
-
-// -- Обновить аватар пользователя
-app.patch(
-  "/auth/updateUserAvatar",
-  checkAuth,
-  avatarValidation,
-  handleValidationErrors,
-  updateUserAvatar
-);
-
-// -- Обновить ранг пользователя
-app.patch(
-  "/auth/updateUserRank",
-  checkAuth,
-  handleValidationErrors,
-  updateUserRank
-);
-
-// -- Получить информацию о профиле
-app.get("/auth/me", checkAuth, getMe);
-
-// -- === CRUD для комментариев ===
-app.post(
-  "/posts/:id/addComment",
-  checkAuth,
-  handleValidationErrors,
-  addComment
-); // -- создать комментарий
-
-app.get("/posts/comments", getAllComments); // -- получить комментарии статьи
-app.post(
-  "/posts/:id/removeComment",
-  checkAuth,
-  handleValidationErrors,
-  removeComment
-); // -- удалить комментарий
-
-app.patch(
-  "/posts/:id/updateComment",
-  checkAuth,
-  handleValidationErrors,
-  updateComment
-);
-
-// === -- CRUD для постов
-app.post(
-  "/posts/create",
-  checkAuth,
-  postCreateValidation,
-  handleValidationErrors,
-  create
-); // -- создать статью
-app.get("/posts", getAll); // -- получить все статьи
-app.get("/posts/:id", getOne); // -- получить одну статью по ее id
-app.get("/posts/tags", getLastTags); // -- получить последние теги
-app.delete("/posts/:id", checkAuth, remove); // -- удалить статью по ее id
-app.patch(
-  "/posts/:id",
-  checkAuth,
-  postCreateValidation,
-  handleValidationErrors,
-  update
-); // -- обновить статью
-
-app.get("/tags", getLastTags); // -- получить теги
-
-// === -- CRUD для пользователей
-app.get("/users", checkAuth, getUsers); // -- получить всех пользователей
-app.delete("/users/delete/:id", checkAuth, deleteUser); // -- удалить пользователя
+// -- Получить последние 5 тегов
+app.get("/tags", getLastTags);
 
 // -- Прослушка сервера
 app.listen(process.env.PORT || 4444, (err) => {
@@ -206,5 +49,5 @@ app.listen(process.env.PORT || 4444, (err) => {
     return console.log(err);
   }
 
-  console.log("server started");
+  console.log("Server started");
 });
