@@ -17,7 +17,6 @@ import {
 // -- Посредники
 import checkAuth from "../utils/checkAuth.js";
 import handleValidationErrors from "../utils/handleValidationErrors.js";
-import responseHeaders from "../utils/responseHeaders.js";
 
 export const posts = () => {
   // -- Cоздать статью
@@ -30,13 +29,13 @@ export const posts = () => {
   );
 
   // -- Получить все статьи
-  app.get("/posts", responseHeaders, getAll);
+  app.get("/posts", getAll);
 
   // -- Получить одну статью по ее id
-  app.get("/posts/:id", responseHeaders, getOne);
+  app.get("/posts/:id", getOne);
 
   // -- Получить последние теги
-  app.get("/posts/tags", responseHeaders, getLastTags);
+  app.get("/posts/tags", getLastTags);
 
   // -- Удалить статью по ее id
   app.delete("/posts/:id", checkAuth, remove);

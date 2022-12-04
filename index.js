@@ -15,7 +15,6 @@ import { posts } from "./cruds/posts.js";
 
 // -- Utils
 import { multerUploads } from "./utils/multer.js";
-import responseHeaders from "./utils/responseHeaders.js";
 
 // -- Подключение к БД
 import { getConnection } from "./config.js";
@@ -24,14 +23,7 @@ getConnection();
 // -- Express app
 export const app = express();
 app.use(express.json());
-app.use(
-  cors({
-    origin: [
-      "https://blog-forum-frontend-alxqz6tnz-scharkoff.vercel.app/",
-      "http://localhost:3001",
-    ],
-  })
-);
+app.use(cors());
 
 // -- Загрузка картинок (multer)
 multerUploads();
@@ -49,10 +41,10 @@ comments();
 posts();
 
 // -- Получить последние 5 тегов
-app.get("/tags", responseHeaders, getLastTags);
+app.get("/tags", getLastTags);
 
 // -- Прослушка сервера
-app.listen(4444, (err) => {
+app.listen(process.env.PORT || 4444, (err) => {
   if (err) {
     return console.log(err);
   }

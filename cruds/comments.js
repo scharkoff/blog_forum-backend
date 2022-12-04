@@ -12,7 +12,6 @@ import {
 // -- Посредники
 import checkAuth from "../utils/checkAuth.js";
 import handleValidationErrors from "../utils/handleValidationErrors.js";
-import responseHeaders from "../utils/responseHeaders.js";
 
 // -- CRUD для комментариев
 export const comments = () => {
@@ -25,7 +24,7 @@ export const comments = () => {
   );
 
   // -- Получить комментарии статьи
-  app.get("/posts/comments", responseHeaders, getAllComments);
+  app.get("/posts/comments", getAllComments);
 
   // -- Удалить комментарий
   app.post(
