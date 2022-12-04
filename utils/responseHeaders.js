@@ -2,7 +2,7 @@ export default function (req, res, next) {
   // Website you wish to allow to connect
   res.setHeader(
     "Access-Control-Allow-Origin",
-    "https://sharkov-blog.onrender.com"
+    "https://blog-forum-frontend-alxqz6tnz-scharkoff.vercel.app/"
   );
 
   // Request methods you wish to allow
