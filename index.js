@@ -15,6 +15,7 @@ import { posts } from "./cruds/posts.js";
 
 // -- Utils
 import { multerUploads } from "./utils/multer.js";
+import responseHeaders from "./utils/responseHeaders.js";
 
 // -- Подключение к БД
 import { getConnection } from "./config.js";
@@ -41,7 +42,7 @@ comments();
 posts();
 
 // -- Получить последние 5 тегов
-app.get("/tags", getLastTags);
+app.get("/tags", responseHeaders, getLastTags);
 
 // -- Прослушка сервера
 app.listen(process.env.PORT || 4444, (err) => {

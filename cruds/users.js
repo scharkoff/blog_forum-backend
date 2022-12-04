@@ -24,11 +24,12 @@ import {
 // -- Посредники
 import checkAuth from "../utils/checkAuth.js";
 import handleValidationErrors from "../utils/handleValidationErrors.js";
+import responseHeaders from "../utils/responseHeaders.js";
 
 // -- CRUD для пользователей
 export const users = () => {
   // -- Получить всех пользователей
-  app.get("/users", checkAuth, getUsers);
+  app.get("/users", responseHeaders, checkAuth, getUsers);
 
   // -- Удалить пользователя
   app.delete("/users/delete/:id", checkAuth, deleteUser);
@@ -78,5 +79,5 @@ export const users = () => {
   );
 
   // -- Получить информацию о профиле
-  app.get("/auth/me", checkAuth, getMe);
+  app.get("/auth/me", responseHeaders, checkAuth, getMe);
 };
