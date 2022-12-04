@@ -23,7 +23,7 @@ getConnection();
 // -- Express app
 export const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: "https://sharkov-blog.onrender.com" }));
 
 // -- Загрузка картинок (multer)
 multerUploads();
