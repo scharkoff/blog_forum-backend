@@ -1,9 +1,14 @@
 export default function (req, res, next) {
   // Website you wish to allow to connect
-  res.setHeader(
-    "Access-Control-Allow-Origin",
-    "https://blog-forum-frontend-alxqz6tnz-scharkoff.vercel.app/"
-  );
+  const allowedOrigins = [
+    "https://blog-forum-frontend-alxqz6tnz-scharkoff.vercel.app/",
+    "http://localhost:3001",
+  ];
+
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
 
   // Request methods you wish to allow
   res.setHeader(

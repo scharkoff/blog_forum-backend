@@ -26,7 +26,10 @@ export const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://blog-forum-frontend-alxqz6tnz-scharkoff.vercel.app/",
+    origin: [
+      "https://blog-forum-frontend-alxqz6tnz-scharkoff.vercel.app/",
+      "http://localhost:3001",
+    ],
   })
 );
 
@@ -49,7 +52,7 @@ posts();
 app.get("/tags", responseHeaders, getLastTags);
 
 // -- Прослушка сервера
-app.listen(process.env.PORT || 4444, (err) => {
+app.listen(4444, (err) => {
   if (err) {
     return console.log(err);
   }
