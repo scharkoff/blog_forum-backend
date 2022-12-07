@@ -23,14 +23,7 @@ getConnection();
 // -- Express app
 export const app = express();
 app.use(express.json());
-app.use(
-  cors({
-    origin: [
-      "https://blog-forum-frontend.vercel.app/",
-      "http://localhost:3001/",
-    ],
-  })
-);
+app.use(cors());
 
 // -- Загрузка картинок (multer)
 multerUploads();

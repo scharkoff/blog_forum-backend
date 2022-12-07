@@ -28,9 +28,18 @@ export const multerUploads = () => {
   const upload = multer({ storage });
 
   // -- Загрузить файл картинку
-  app.post("/upload", checkAuth, upload.single("image"), (req, res) => {
-    return res.json({
-      url: `/uploads/${req.file.originalname}`,
-    });
-  });
+  app.post(
+    "/upload",
+    function (req, res, next) {
+      res.header("Access-Control-Allow-Origin", "*");
+      next();
+    },
+    checkAuth,
+    upload.single("image"),
+    (req, res) => {
+      return res.json({
+        url: `/uploads/${req.file.originalname}`,
+      });
+    }
+  );
 };
