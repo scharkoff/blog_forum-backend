@@ -15,7 +15,7 @@ export const multerUploads = () => {
   // -- Multer storage
   const storage = multer.diskStorage({
     destination: (__, _, cb) => {
-      if (fs.existsSync("uploads")) {
+      if (!fs.existsSync("uploads")) {
         fs.mkdirSync("uploads");
       }
       cb(null, "uploads");
@@ -28,18 +28,9 @@ export const multerUploads = () => {
   const upload = multer({ storage });
 
   // -- Загрузить файл картинку
-  app.post(
-    "/upload",
-    function (req, res, next) {
-      res.header("Access-Control-Allow-Origin", "*");
-      next();
-    },
-    checkAuth,
-    upload.single("image"),
-    (req, res) => {
-      return res.json({
-        url: `/uploads/${req.file.originalname}`,
-      });
-    }
-  );
+  app.post("/upload", checkAuth, upload.single("image"), (req, res) => {
+    return res.json({
+      url: `/uploads/${req.file.originalname}`,
+    });
+  });
 };
