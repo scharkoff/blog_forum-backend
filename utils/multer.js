@@ -16,10 +16,10 @@ export const multerUploads = () => {
   // -- Multer storage
   const storage = multer.diskStorage({
     destination: (__, _, cb) => {
-      if (!fs.existsSync("../uploads")) {
-        fs.mkdirSync("../uploads");
+      if (!fs.existsSync("uploads")) {
+        fs.mkdirSync("uploads");
       }
-      cb(null, "../uploads");
+      cb(null, "uploads");
     },
     filename: (_, file, cb) => {
       cb(null, file.originalname);
