@@ -11,7 +11,7 @@ import checkAuth from "./checkAuth.js";
 
 export const multerUploads = () => {
   // -- Доступ к картинке
-  app.use("/uploads", express.static("uploads")); // -- GET запрос на получение статичного файла по его названию (с расширением)
+  app.use("/uploads", express.static("uploads"));
 
   // -- Multer storage
   const storage = multer.diskStorage({

@@ -10,7 +10,7 @@ import PostModel from "../models/Post.js";
 import CommentModel from "../models/Comment.js";
 
 // -- Default avatar image
-const defaultAvatar = process.env.PORT ? "/uploads/noavatar.png" : "http://localhost:4444/uploads/noavatar.png";
+const defaultAvatar = "/uploads/noavatar.png";
 
 // -- Регистрация пользователя
 export const register = async (req, res) => {
