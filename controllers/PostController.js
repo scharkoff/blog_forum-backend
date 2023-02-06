@@ -19,13 +19,14 @@ export const getAll = async (req, res) => {
 // -- Получить последние 5 тегов
 export const getLastTags = async (req, res) => {
   try {
-    const posts = await PostModel.find().limit(5).exec();
-
+    const posts = await PostModel.find().exec();
+    console.log(posts)
     const tags = posts
       .reverse()
       .map((obj) => obj.tags)
       .flat()
       .filter((tag) => tag);
+
 
     const fiveTags = [...new Set(tags)].slice(0, 5);
 
