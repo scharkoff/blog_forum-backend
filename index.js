@@ -1,49 +1,31 @@
-// -- Плагины
 import express from "express";
 
 // -- CORS
 import cors from "cors";
 
-// -- Теги
-import { getLastTags } from "./controllers/PostController.js";
+// -- Routes
+import { authRouter } from "./api/routes/auth.js";
+import { usersRouter } from "./api/routes/users.js";
+import { commentsRouter } from "./api/routes/comments.js";
+import { postsRouter } from "./api/routes/posts.js";
+import { multerRouter } from "./api/routes/multer.js";
 
-// -- CRUDs
-import { auth } from "./cruds/auth.js";
-import { users } from "./cruds/users.js";
-import { comments } from "./cruds/comments.js";
-import { posts } from "./cruds/posts.js";
+// -- Configs
+import { getConnection } from "./api/configs/config.js";
 
-// -- Utils
-import { multerUploads } from "./utils/multer.js";
-
-// -- Подключение к БД
-import { getConnection } from "./config.js";
-getConnection();
-
-// -- Express app
 export const app = express();
+
+getConnection();
 app.use(express.json());
 app.use(cors());
 
-// -- Загрузка картинок (multer)
-multerUploads();
+app.use(multerRouter);
+app.use(authRouter);
+app.use(usersRouter);
+app.use(commentsRouter);
+app.use(postsRouter);
 
-// -- Авторазиция и регистрация в приложении
-auth();
 
-// -- CRUD для пользователей (админка)
-users();
-
-// -- CRUD для комментариев
-comments();
-
-// -- CRUD для постов
-posts();
-
-// -- Получить последние 5 тегов
-app.get("/tags", getLastTags);
-
-// -- Прослушка сервера
 app.listen(process.env.PORT || 4444, (err) => {
   if (err) {
     return console.log(err);
