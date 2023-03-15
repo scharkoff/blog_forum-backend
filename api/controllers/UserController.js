@@ -1,6 +1,5 @@
 
 import bcrypt from "bcrypt";
-import { json } from "express";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 
@@ -54,7 +53,6 @@ export const register = async (req, res) => {
       success: true,
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       message: "Не удалось зарегистрироваться!",
       error,
@@ -101,7 +99,6 @@ export const login = async (req, res) => {
       token,
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       message: "Не удалось авторизоваться!",
       error,
@@ -124,7 +121,6 @@ export const getMe = async (req, res) => {
 
     return res.json(userData);
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       message: "Что-то пошло не так!",
       error,
@@ -139,6 +135,7 @@ export const updateUserLogin = async (req, res) => {
       fullName: req.body.fullName,
     });
 
+
     if (!user) {
       return res.status(404).json({
         message: "Пользователь не найден!",
@@ -152,7 +149,6 @@ export const updateUserLogin = async (req, res) => {
       success: true,
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       message: "Что-то пошло не так!",
       error,
@@ -184,7 +180,6 @@ export const updateUserPassword = async (req, res) => {
       success: true,
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       message: "Что-то пошло не так!",
       error,
@@ -195,6 +190,13 @@ export const updateUserPassword = async (req, res) => {
 
 export const updateUserEmail = async (req, res) => {
   try {
+    const checkNewUserEmail = await UserModel.findOne({ email: req.body.email });
+    if (checkNewUserEmail) {
+      return res.status(400).json({
+        message: "Данный аккаунт уже зарегистрирован!",
+      });
+    }
+
     const user = await UserModel.findByIdAndUpdate(req.body.id, {
       email: req.body.email,
     });
@@ -211,8 +213,8 @@ export const updateUserEmail = async (req, res) => {
       userData,
       success: true,
     });
+
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       message: "Что-то пошло не так!",
       error,
@@ -240,7 +242,6 @@ export const updateUserAvatar = async (req, res) => {
       success: true,
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       message: "Что-то пошло не так!",
       error,
@@ -268,7 +269,6 @@ export const updateUserRank = async (req, res) => {
       success: true,
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       message: "Что-то пошло не так!",
       error,
@@ -283,7 +283,6 @@ export const getUsers = async (req, res) => {
 
     return res.json(userList);
   } catch (error) {
-    console.log(error);
     return res.status(400).json({
       message: "Что-то пошло не так!",
     });
@@ -335,7 +334,6 @@ export const deleteUser = async (req, res) => {
       .deleteMany()
       .exec();
   } catch (error) {
-    console.log(error);
     return res.status(400).json({
       success: false,
       message: "Что-то пошло не так!",

@@ -10,7 +10,6 @@ export const getAllComments = async (req, res) => {
 
     return res.json(comments);
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       message: "Не удалось получить комментарии!",
     });
@@ -32,7 +31,6 @@ export const addComment = async (req, res) => {
       { $inc: { commentsCount: 1 } },
       (err, doc) => {
         if (err) {
-          console.log(error);
           return res.status(500).json({
             message: "Не удалось создать комментарий!",
           });
@@ -43,7 +41,6 @@ export const addComment = async (req, res) => {
     const comment = await docComment.save();
     return res.json(comment);
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       message: "Не удалось создать комментарий!",
     });
@@ -73,7 +70,6 @@ export const removeComment = async (req, res) => {
       },
       (err, doc) => {
         if (err) {
-          console.log(error);
           return res.status(500).json({
             message: "Не удалось удалить комментарий!",
           });
@@ -84,7 +80,6 @@ export const removeComment = async (req, res) => {
       }
     );
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       message: "Не удалось удалить комментарий!",
     });
@@ -104,7 +99,6 @@ export const updateComment = async (req, res) => {
       },
       (err, doc) => {
         if (err) {
-          console.log(error);
           return res.status(500).json({
             message: "Не удалось изменить комментарий!",
           });
@@ -115,7 +109,6 @@ export const updateComment = async (req, res) => {
       }
     );
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       message: "Не удалось изменить комментарий!",
     });
