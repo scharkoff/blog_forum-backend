@@ -1,15 +1,15 @@
 import { Router } from "express";
 
-// -- Контроллеры
+
 import { login, register } from "../controllers/UserController.js";
 
-// -- Валидации
+
 import {
   registerValidation,
   loginValidation,
-} from "../../validations/validations.js";
+} from "../validations/validations.js";
 
-// -- Посредники
+
 import handleValidationErrors from "../middlewares/handleValidationErrors.js";
 
 export const authRouter = Router();

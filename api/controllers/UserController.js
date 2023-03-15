@@ -1,18 +1,18 @@
-// -- Плагины
+
 import bcrypt from "bcrypt";
 import { json } from "express";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 
-// -- Модели
+
 import UserModel from "../models/User.js";
 import PostModel from "../models/Post.js";
 import CommentModel from "../models/Comment.js";
 
-// -- Default avatar image
+
 const defaultAvatar = "/uploads/noavatar.png";
 
-// -- Регистрация пользователя
+
 export const register = async (req, res) => {
   try {
     const password = req.body.password;
@@ -62,7 +62,7 @@ export const register = async (req, res) => {
   }
 };
 
-// -- Авторизация пользователя
+
 export const login = async (req, res) => {
   try {
     const user = await UserModel.findOne({ email: req.body.email });
@@ -109,7 +109,7 @@ export const login = async (req, res) => {
   }
 };
 
-// -- Получить информацию о пользователе
+
 export const getMe = async (req, res) => {
   try {
     const user = await UserModel.findById(req.userId);
@@ -132,7 +132,7 @@ export const getMe = async (req, res) => {
   }
 };
 
-// -- Изменить логин пользователя
+
 export const updateUserLogin = async (req, res) => {
   try {
     const user = await UserModel.findByIdAndUpdate(req.body.id, {
@@ -160,7 +160,7 @@ export const updateUserLogin = async (req, res) => {
   }
 };
 
-// -- Изменить пароль пользователя
+
 export const updateUserPassword = async (req, res) => {
   try {
     const password = req.body.password;
@@ -192,7 +192,7 @@ export const updateUserPassword = async (req, res) => {
   }
 };
 
-// -- Изменить почту пользователя
+
 export const updateUserEmail = async (req, res) => {
   try {
     const user = await UserModel.findByIdAndUpdate(req.body.id, {
@@ -220,7 +220,7 @@ export const updateUserEmail = async (req, res) => {
   }
 };
 
-// -- Изменить аватар пользователя
+
 export const updateUserAvatar = async (req, res) => {
   try {
     const user = await UserModel.findByIdAndUpdate(req.body.id, {
@@ -248,7 +248,7 @@ export const updateUserAvatar = async (req, res) => {
   }
 };
 
-// -- Изменить ранг пользователя
+
 export const updateUserRank = async (req, res) => {
   try {
     const user = await UserModel.findByIdAndUpdate(req.body.id, {
@@ -276,7 +276,7 @@ export const updateUserRank = async (req, res) => {
   }
 };
 
-// -- Получить всех пользователей
+
 export const getUsers = async (req, res) => {
   try {
     const userList = await UserModel.find().exec();
@@ -290,7 +290,7 @@ export const getUsers = async (req, res) => {
   }
 };
 
-// -- Удалить пользователя
+
 export const deleteUser = async (req, res) => {
   try {
     const userId = req.params.id;
@@ -321,14 +321,14 @@ export const deleteUser = async (req, res) => {
       }
     );
 
-    // -- Удалить все комментарии пользователя
+
     await CommentModel.find({
       user: mongoose.Types.ObjectId(userId),
     })
       .deleteMany()
       .exec();
 
-    // -- Удалить все посты пользователя
+
     await PostModel.find({
       user: mongoose.Types.ObjectId(userId),
     })

@@ -1,7 +1,6 @@
 import CommentModel from "../models/Comment.js";
 import PostModel from "../models/Post.js";
 
-// -- Получить все комментарии статьи
 export const getAllComments = async (req, res) => {
   try {
     const comments = await CommentModel.find()
@@ -18,7 +17,6 @@ export const getAllComments = async (req, res) => {
   }
 };
 
-// -- Создать комментарий
 export const addComment = async (req, res) => {
   try {
     const docComment = new CommentModel({
@@ -42,7 +40,7 @@ export const addComment = async (req, res) => {
       }
     );
 
-    const comment = await docComment.save(); // -- сохранить комментарий в бд
+    const comment = await docComment.save();
     return res.json(comment);
   } catch (error) {
     console.log(error);
@@ -52,7 +50,6 @@ export const addComment = async (req, res) => {
   }
 };
 
-// -- Удалить комментарий
 export const removeComment = async (req, res) => {
   try {
     const commentId = req.body.commentId;
@@ -94,7 +91,6 @@ export const removeComment = async (req, res) => {
   }
 };
 
-// -- Обновить комментарий
 export const updateComment = async (req, res) => {
   try {
     const commentId = req.body.commentId;

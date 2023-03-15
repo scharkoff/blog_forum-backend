@@ -1,16 +1,13 @@
 import express from "express";
 
-// -- CORS
 import cors from "cors";
 
-// -- Routes
 import { authRouter } from "./api/routes/auth.js";
 import { usersRouter } from "./api/routes/users.js";
 import { commentsRouter } from "./api/routes/comments.js";
 import { postsRouter } from "./api/routes/posts.js";
 import { multerRouter } from "./api/routes/multer.js";
 
-// -- Configs
 import { getConnection } from "./api/configs/config.js";
 
 export const app = express();

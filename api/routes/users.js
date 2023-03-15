@@ -1,14 +1,14 @@
 import { Router } from "express";
 
-// -- Валидации
+
 import {
   fullNameValidation,
   passwordValidation,
   emailValidation,
   avatarValidation,
-} from "../../validations/validations.js";
+} from "../validations/validations.js";
 
-// -- User controller
+
 import {
   getMe,
   updateUserLogin,
@@ -20,19 +20,19 @@ import {
   updateUserRank,
 } from "../controllers/UserController.js";
 
-// -- Посредники
+
 import checkAuth from "../middlewares/checkAuth.js";
 import handleValidationErrors from "../middlewares/handleValidationErrors.js";
 
 export const usersRouter = Router();
 
-// -- Получить всех пользователей
+
 usersRouter.get("/users", checkAuth, getUsers);
 
-// -- Удалить пользователя
+
 usersRouter.delete("/users/delete/:id", checkAuth, deleteUser);
 
-// -- Обновить логин пользователя
+
 usersRouter.patch(
   "/auth/updateUserLogin",
   checkAuth,
@@ -41,7 +41,7 @@ usersRouter.patch(
   updateUserLogin
 );
 
-// -- Обновить почту пользователя
+
 usersRouter.patch(
   "/auth/updateUserEmail",
   checkAuth,
@@ -50,7 +50,7 @@ usersRouter.patch(
   updateUserEmail
 );
 
-// -- Обновить пароль пользователя
+
 usersRouter.patch(
   "/auth/updateUserPassword",
   checkAuth,
@@ -59,7 +59,7 @@ usersRouter.patch(
   updateUserPassword
 );
 
-// -- Обновить аватар пользователя
+
 usersRouter.patch(
   "/auth/updateUserAvatar",
   checkAuth,
@@ -68,7 +68,7 @@ usersRouter.patch(
   updateUserAvatar
 );
 
-// -- Обновить ранг пользователя
+
 usersRouter.patch(
   "/auth/updateUserRank",
   checkAuth,
@@ -76,5 +76,5 @@ usersRouter.patch(
   updateUserRank
 );
 
-// -- Получить информацию о профиле
+
 usersRouter.get("/auth/me", checkAuth, getMe);

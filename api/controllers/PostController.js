@@ -2,7 +2,6 @@ import PostModel from "../models/Post.js";
 import CommentModel from "../models/Comment.js";
 import mongoose from "mongoose";
 
-// -- Получить все статьи
 export const getAll = async (req, res) => {
   try {
     const posts = await PostModel.find().populate("user").exec();
@@ -16,7 +15,6 @@ export const getAll = async (req, res) => {
   }
 };
 
-// -- Получить последние 5 тегов
 export const getLastTags = async (req, res) => {
   try {
     const posts = await PostModel.find().exec();
@@ -39,7 +37,6 @@ export const getLastTags = async (req, res) => {
   }
 };
 
-// -- Получить одну статью
 export const getOne = async (req, res) => {
   try {
     const postId = req.params.id;
@@ -83,19 +80,16 @@ export const getOne = async (req, res) => {
   }
 };
 
-// -- Удалить статью
 export const remove = async (req, res) => {
   try {
     const postId = req.params.id;
 
-    // -- Удалить все комментарии поста
     await CommentModel.find({
       post: mongoose.Types.ObjectId(postId),
     })
       .deleteMany()
       .exec();
 
-    // -- Удалить сам пост
     PostModel.findOneAndDelete(
       {
         _id: postId,
@@ -127,7 +121,6 @@ export const remove = async (req, res) => {
   }
 };
 
-// -- Создать статью
 export const create = async (req, res) => {
   try {
     const doc = new PostModel({
@@ -148,7 +141,6 @@ export const create = async (req, res) => {
   }
 };
 
-// -- Обновить статью
 export const update = async (req, res) => {
   try {
     const postId = req.params.id;
