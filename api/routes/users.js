@@ -10,7 +10,6 @@ import {
 
 
 import {
-  getMe,
   updateUserLogin,
   updateUserEmail,
   updateUserPassword,
@@ -23,6 +22,7 @@ import {
 
 import checkAuth from "../middlewares/checkAuth.js";
 import handleValidationErrors from "../middlewares/handleValidationErrors.js";
+import { getMe } from "../controllers/AuthController.js";
 
 export const usersRouter = Router();
 

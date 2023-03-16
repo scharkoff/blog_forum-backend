@@ -1,9 +1,6 @@
-
 import { Router } from "express";
 
-
 import { postCreateValidation } from "../validations/validations.js";
-
 
 import {
   create,
@@ -13,7 +10,6 @@ import {
   update,
   getLastTags,
 } from "../controllers/PostController.js";
-
 
 import checkAuth from "../middlewares/checkAuth.js";
 import handleValidationErrors from "../middlewares/handleValidationErrors.js";

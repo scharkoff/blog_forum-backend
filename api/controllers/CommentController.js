@@ -1,6 +1,8 @@
 import CommentModel from "../models/Comment.js";
 import PostModel from "../models/Post.js";
 
+import { createResponse } from "../utils/createResponse.js";
+
 export const getAllComments = async (req, res) => {
   try {
     const comments = await CommentModel.find()
@@ -8,11 +10,9 @@ export const getAllComments = async (req, res) => {
       .populate("post")
       .exec();
 
-    return res.json(comments);
+    return createResponse(res, 200, "Комментарии успешно получены!", "success", { comments });
   } catch (error) {
-    return res.status(500).json({
-      message: "Не удалось получить комментарии!",
-    });
+    return createResponse(res, 500, "Не удалось получить комментарии. Что-то пошло не так!", "error", { error });
   }
 };
 
@@ -31,19 +31,16 @@ export const addComment = async (req, res) => {
       { $inc: { commentsCount: 1 } },
       (err, doc) => {
         if (err) {
-          return res.status(500).json({
-            message: "Не удалось создать комментарий!",
-          });
+          return createResponse(res, 500, "Не удалось создать комментарий!", "error", { err });
         }
       }
     );
 
     const comment = await docComment.save();
-    return res.json(comment);
+
+    return createResponse(res, 200, "Комментарий успешно создан!", "success", { comment });
   } catch (error) {
-    return res.status(500).json({
-      message: "Не удалось создать комментарий!",
-    });
+    return createResponse(res, 500, "Не удалось создать комментарий. Что-то пошло не так!", "error", { error });
   }
 };
 
@@ -56,10 +53,11 @@ export const removeComment = async (req, res) => {
       { $inc: { commentsCount: -1 } },
       (err, doc) => {
         if (err) {
-          console.log(err);
-          return res.status(500).json({
-            message: "Не удалось удалить комментарий!",
-          });
+          return createResponse(res, 500, "Не удалось удалить комментарий. Что-то пошло не так!", "error", { err });
+        }
+
+        if (!doc) {
+          return createResponse(res, 404, "Не удалось удалить комментарий. Запись не найдена!", "error");
         }
       }
     );
@@ -69,20 +67,19 @@ export const removeComment = async (req, res) => {
         _id: commentId,
       },
       (err, doc) => {
-        if (err) {
-          return res.status(500).json({
-            message: "Не удалось удалить комментарий!",
-          });
+        if (!doc) {
+          return createResponse(res, 404, "Не удалось удалить комментарий. Комментарий не найден!", "error");
         }
-        return res.json({
-          success: true,
-        });
+
+        if (err) {
+          return createResponse(res, 500, "Не удалось удалить комментарий. Что-то пошло не так!", "error", { err });
+        }
+
+        return createResponse(res, 200, "Комментарий успешно удален!", "success");
       }
     );
   } catch (error) {
-    return res.status(500).json({
-      message: "Не удалось удалить комментарий!",
-    });
+    return createResponse(res, 500, "Не удалось удалить комментарий. Что-то пошло не так!", "error", { error });
   }
 };
 
@@ -98,19 +95,17 @@ export const updateComment = async (req, res) => {
         text: req.body.text,
       },
       (err, doc) => {
-        if (err) {
-          return res.status(500).json({
-            message: "Не удалось изменить комментарий!",
-          });
+        if (!doc) {
+          return createResponse(res, 404, "Не удалось изменить комментарий. Комментарий не найден!", "error");
         }
-        return res.json({
-          success: true,
-        });
+
+        if (err) {
+          return createResponse(res, 500, "Не удалось изменить комментарий. Что-то пошло не так!", "error", { err });
+        }
+        return createResponse(res, 200, "Комментарий успешно изменен!", "success");
       }
     );
   } catch (error) {
-    return res.status(500).json({
-      message: "Не удалось изменить комментарий!",
-    });
+    return createResponse(res, 500, "Не удалось удалить комментарий. Что-то пошло не так!", "error", { error });
   }
 };

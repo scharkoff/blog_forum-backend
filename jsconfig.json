@@ -1,6 +1,0 @@
-{
-  "compilerOptions": {
-    "baseUrl": "api"
-  },
-  "include": ["api"]
-}

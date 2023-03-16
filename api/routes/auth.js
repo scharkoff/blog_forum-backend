@@ -1,7 +1,6 @@
 import { Router } from "express";
 
-
-import { login, register } from "../controllers/UserController.js";
+import { login, register } from "../controllers/AuthController.js";
 
 
 import {

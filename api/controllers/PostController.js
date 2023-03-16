@@ -2,15 +2,15 @@ import PostModel from "../models/Post.js";
 import CommentModel from "../models/Comment.js";
 import mongoose from "mongoose";
 
+import { createResponse } from "../utils/createResponse.js";
+
 export const getAll = async (req, res) => {
   try {
     const posts = await PostModel.find().populate("user").exec();
 
-    return res.json(posts);
+    return createResponse(res, 200, "Статьи успешно получены!", "success", { posts });
   } catch (error) {
-    return res.status(500).json({
-      message: "Не удалось получить статьи!",
-    });
+    return createResponse(res, 500, "Не удалось получить статьи. Что-то пошло не так!", "error", { error });
   }
 };
 
@@ -27,11 +27,9 @@ export const getLastTags = async (req, res) => {
 
     const fiveTags = [...new Set(tags)].slice(0, 5);
 
-    return res.json(fiveTags);
+    return createResponse(res, 200, "Тэги успешно получены!", "success", { fiveTags });
   } catch (error) {
-    return res.status(500).json({
-      message: "Не удалось получить статьи!",
-    });
+    return createResponse(res, 500, "Не удалось получить тэги. Что-то пошло не так!", "error", { error });
   }
 };
 
@@ -53,27 +51,20 @@ export const getOne = async (req, res) => {
       {
         returnDocument: "after",
       },
-      (err, doc) => {
+      (err, post) => {
         if (err) {
-
-          return res.status(500).json({
-            message: "Не удалось получить статьи!",
-          });
+          return createResponse(res, 500, "Не удалось получить статью!", "error", { err });
         }
 
-        if (!doc) {
-          return res.status(404).json({
-            message: "Статья не найдена!",
-          });
+        if (!post) {
+          return createResponse(res, 404, "Статья не найдена!", "error");
         }
 
-        return res.json(doc);
+        return createResponse(res, 200, "Статья успешно получена!", "success", { post });
       }
     ).populate("user");
   } catch (error) {
-    return res.status(500).json({
-      message: "Не удалось получить статьи!",
-    });
+    return createResponse(res, 500, "Не удалось получить статью. Что-то пошло не так!", "error", { error });
   }
 };
 
@@ -93,27 +84,18 @@ export const remove = async (req, res) => {
       },
       (err, doc) => {
         if (err) {
-
-          return res.status(500).json({
-            message: "Не удалось удалить статью!",
-          });
+          return createResponse(res, 500, "Не удалось удалить статью!", "error", { err });
         }
 
         if (!doc) {
-          return res.status(404).json({
-            message: "Статья не найдена!",
-          });
+          return createResponse(res, 404, "Статья не найдена!", "error");
         }
 
-        return res.json({
-          success: true,
-        });
+        return createResponse(res, 200, "Статья успешно удалена!", "success");
       }
     );
   } catch (error) {
-    return res.status(500).json({
-      message: "Не удалось получить статьи!",
-    });
+    return createResponse(res, 500, "Не удалось удалить статью. Что-то пошло не так!", "error", { error });
   }
 };
 
@@ -128,11 +110,10 @@ export const create = async (req, res) => {
     });
 
     const post = await doc.save();
-    return res.json(post);
+
+    return createResponse(res, 200, "Статья успешно создана!", "success", { post });
   } catch (error) {
-    return res.status(500).json({
-      message: "Не удалось создать статью!",
-    });
+    return createResponse(res, 500, "Не удалось создать статью. Что-то пошло не так!", "error", { error });
   }
 };
 
@@ -154,12 +135,8 @@ export const update = async (req, res) => {
       }
     );
 
-    return res.json({
-      success: true,
-    });
+    return createResponse(res, 200, "Статья успешно изменена!", "success");
   } catch (error) {
-    return res.status(500).json({
-      message: "Не удалось обновить статью!",
-    });
+    return createResponse(res, 500, "Не удалось обновить статью. Что-то пошло не так!", "error", { error });
   }
 };
