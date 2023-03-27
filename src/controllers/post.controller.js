@@ -1,5 +1,5 @@
-import PostModel from "../models/Post.js";
-import CommentModel from "../models/Comment.js";
+import PostModel from "../domain/post/entity/Post.js";
+import CommentModel from "../domain/comment/entity/Comment.js";
 import mongoose from "mongoose";
 
 import { createResponse } from "../utils/createResponse.js";

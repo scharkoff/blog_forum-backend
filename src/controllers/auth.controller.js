@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
-import UserModel from "../models/User.js";
+import UserModel from "../domain/user/entity/User.js";
 
 import { createResponse } from "../utils/createResponse.js";
 

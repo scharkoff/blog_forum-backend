@@ -1,80 +1,62 @@
 import { Router } from "express";
-
-
 import {
   fullNameValidation,
   passwordValidation,
   emailValidation,
   avatarValidation,
 } from "../validations/validations.js";
-
-
 import {
-  updateUserLogin,
-  updateUserEmail,
-  updateUserPassword,
-  updateUserAvatar,
-  getUsers,
-  deleteUser,
-  updateUserRank,
-} from "../controllers/UserController.js";
-
-
+  UserController,
+} from "../controllers/user.controller.js";
 import checkAuth from "../middlewares/checkAuth.js";
 import handleValidationErrors from "../middlewares/handleValidationErrors.js";
-import { getMe } from "../controllers/AuthController.js";
+import { getMe } from "../controllers/auth.controller.js";
 
 export const usersRouter = Router();
 
+const userController = new UserController();
 
-usersRouter.get("/users", checkAuth, getUsers);
+usersRouter.get("/users", checkAuth, userController.getUsers.bind(userController));
 
-
-usersRouter.delete("/users/delete/:id", checkAuth, deleteUser);
-
+usersRouter.delete("/users/delete/:id", checkAuth, userController.deleteUser.bind(userController));
 
 usersRouter.patch(
   "/auth/updateUserLogin",
   checkAuth,
   fullNameValidation,
   handleValidationErrors,
-  updateUserLogin
+  userController.updateUserLogin.bind(userController)
 );
-
 
 usersRouter.patch(
   "/auth/updateUserEmail",
   checkAuth,
   emailValidation,
   handleValidationErrors,
-  updateUserEmail
+  userController.updateUserEmail.bind(userController)
 );
-
 
 usersRouter.patch(
   "/auth/updateUserPassword",
   checkAuth,
   passwordValidation,
   handleValidationErrors,
-  updateUserPassword
+  userController.updateUserPassword.bind(userController)
 );
-
 
 usersRouter.patch(
   "/auth/updateUserAvatar",
   checkAuth,
   avatarValidation,
   handleValidationErrors,
-  updateUserAvatar
+  userController.updateUserAvatar.bind(userController)
 );
-
 
 usersRouter.patch(
   "/auth/updateUserRank",
   checkAuth,
   handleValidationErrors,
-  updateUserRank
+  userController.updateUserRank.bind(userController)
 );
-
 
 usersRouter.get("/auth/me", checkAuth, getMe);

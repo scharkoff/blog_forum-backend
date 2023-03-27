@@ -6,7 +6,7 @@ import {
   getAllComments,
   removeComment,
   updateComment,
-} from "../controllers/CommentController.js";
+} from "../controllers/comment.controller.js";
 
 
 import checkAuth from "../middlewares/checkAuth.js";

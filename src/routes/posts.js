@@ -9,7 +9,7 @@ import {
   remove,
   update,
   getLastTags,
-} from "../controllers/PostController.js";
+} from "../controllers/post.controller.js";
 
 import checkAuth from "../middlewares/checkAuth.js";
 import handleValidationErrors from "../middlewares/handleValidationErrors.js";
