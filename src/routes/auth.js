@@ -1,24 +1,24 @@
 import { Router } from "express";
-
-import { login, register } from "../controllers/auth.controller.js";
-
-
+import { AuthController } from "../controllers/auth.controller.js";
 import {
   registerValidation,
   loginValidation,
 } from "../validations/validations.js";
-
-
 import handleValidationErrors from "../middlewares/handleValidationErrors.js";
+import checkAuth from "../middlewares/checkAuth.js";
 
 export const authRouter = Router();
 
-authRouter.post("/auth/login", loginValidation, handleValidationErrors, login);
+const authController = new AuthController();
+
+authRouter.post("/auth/login", loginValidation, handleValidationErrors, authController.login.bind(authController));
 
 authRouter.post(
   "/auth/register",
   registerValidation,
   handleValidationErrors,
-  register
+  authController.register.bind(authController)
 );
+
+authRouter.get("/auth/me", checkAuth, authController.getMe.bind(authController));
 

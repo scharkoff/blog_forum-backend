@@ -10,7 +10,6 @@ import {
 } from "../controllers/user.controller.js";
 import checkAuth from "../middlewares/checkAuth.js";
 import handleValidationErrors from "../middlewares/handleValidationErrors.js";
-import { getMe } from "../controllers/auth.controller.js";
 
 export const usersRouter = Router();
 
@@ -59,4 +58,4 @@ usersRouter.patch(
   userController.updateUserRank.bind(userController)
 );
 
-usersRouter.get("/auth/me", checkAuth, getMe);
+

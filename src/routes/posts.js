@@ -2,50 +2,37 @@ import { Router } from "express";
 
 import { postCreateValidation } from "../validations/validations.js";
 
-import {
-  create,
-  getAll,
-  getOne,
-  remove,
-  update,
-  getLastTags,
-} from "../controllers/post.controller.js";
-
 import checkAuth from "../middlewares/checkAuth.js";
 import handleValidationErrors from "../middlewares/handleValidationErrors.js";
+import { PostService } from "../domain/post/post.service.js";
 
 export const postsRouter = Router();
 
+const postService = new PostService();
 
 postsRouter.post(
   "/posts/create",
   checkAuth,
   postCreateValidation,
   handleValidationErrors,
-  create
+  postService.create.bind(postService)
 );
 
+postsRouter.get("/tags", postService.getLastTags.bind(postService));
 
-postsRouter.get("/tags", getLastTags);
+postsRouter.get("/posts", postService.getAll.bind(postService));
 
+postsRouter.get("/posts/:id", postService.getOne.bind(postService));
 
-postsRouter.get("/posts", getAll);
+postsRouter.get("/posts/tags", postService.getLastTags.bind(postService));
 
-
-postsRouter.get("/posts/:id", getOne);
-
-
-postsRouter.get("/posts/tags", getLastTags);
-
-
-postsRouter.delete("/posts/:id", checkAuth, remove);
-
+postsRouter.delete("/posts/:id", checkAuth, postService.remove.bind(postService));
 
 postsRouter.patch(
   "/posts/:id",
   checkAuth,
   postCreateValidation,
   handleValidationErrors,
-  update
+  postService.update.bind(postService)
 );
 

@@ -1,42 +1,31 @@
 import { Router } from "express";
-
-
-import {
-  addComment,
-  getAllComments,
-  removeComment,
-  updateComment,
-} from "../controllers/comment.controller.js";
-
-
+import { CommentController } from "../controllers/comment.controller.js";
 import checkAuth from "../middlewares/checkAuth.js";
 import handleValidationErrors from "../middlewares/handleValidationErrors.js";
 
 export const commentsRouter = Router();
 
+const commentController = new CommentController();
 
 commentsRouter.post(
-  "/posts/:id/addComment",
+  "/posts/comments/:id",
   checkAuth,
   handleValidationErrors,
-  addComment
+  commentController.create.bind(commentController)
 );
 
+commentsRouter.get("/posts/comments", commentController.getAll.bind(commentController));
 
-commentsRouter.get("/posts/comments", getAllComments);
-
-
-commentsRouter.post(
-  "/posts/:id/removeComment",
+commentsRouter.delete(
+  "/posts/comments/:id",
   checkAuth,
   handleValidationErrors,
-  removeComment
+  commentController.remove.bind(commentController)
 );
-
 
 commentsRouter.patch(
-  "/posts/:id/updateComment",
+  "/posts/comments/:id",
   checkAuth,
   handleValidationErrors,
-  updateComment
+  commentController.update.bind(commentController)
 );
