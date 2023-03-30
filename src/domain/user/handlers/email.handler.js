@@ -1,0 +1,20 @@
+import UserModel from "../entity/User.js";
+
+export async function handleEmailUpdate(props) {
+    const checkNewUserEmail = await UserModel.findOne({ email: props.email });
+
+    if (checkNewUserEmail) {
+        return props.res.status(400).json({ message: "Данная почта уже используется", statusCode: 400 })
+    }
+
+    const user = await UserModel.findByIdAndUpdate(props.id, {
+        email: props.email,
+    }).exec();
+
+    if (!user) {
+        return props.res.status(404).json({ message: "Пользователь не найден", statusCode: 404 })
+    }
+
+    const { passwordHash, ...userData } = user._doc;
+    return props.res.status(200).json({ userData, message: "Почта успешно изменена", statusCode: 200 })
+}

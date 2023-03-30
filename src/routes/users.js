@@ -4,6 +4,7 @@ import {
   passwordValidation,
   emailValidation,
   avatarValidation,
+  loginValidation,
 } from "../validations/validations.js";
 import {
   UserController,
@@ -22,42 +23,9 @@ usersRouter.get("/users/:id", checkAuth, userController.findOneById.bind(userCon
 usersRouter.delete("/users/:id", checkAuth, userController.delete.bind(userController));
 
 usersRouter.patch(
-  "/auth/updateUserLogin",
+  "/users/:id",
   checkAuth,
-  fullNameValidation,
-  handleValidationErrors,
-  userController.updateUserLogin.bind(userController)
-);
-
-usersRouter.patch(
-  "/auth/updateUserEmail",
-  checkAuth,
-  emailValidation,
-  handleValidationErrors,
-  userController.updateUserEmail.bind(userController)
-);
-
-usersRouter.patch(
-  "/auth/updateUserPassword",
-  checkAuth,
-  passwordValidation,
-  handleValidationErrors,
-  userController.updateUserPassword.bind(userController)
-);
-
-usersRouter.patch(
-  "/auth/updateUserAvatar",
-  checkAuth,
-  avatarValidation,
-  handleValidationErrors,
-  userController.updateUserAvatar.bind(userController)
-);
-
-usersRouter.patch(
-  "/auth/updateUserRank",
-  checkAuth,
-  handleValidationErrors,
-  userController.updateUserRank.bind(userController)
+  userController.updateByCondition.bind(userController)
 );
 
 

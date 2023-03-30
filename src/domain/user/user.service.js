@@ -2,6 +2,11 @@ import UserModel from "./entity/User.js";
 import PostModel from "../post/entity/Post.js";
 import CommentModel from "../comment/entity/Comment.js";
 import mongoose from "mongoose";
+import { handleFullNameUpdate } from "./handlers/fullName.handler.js";
+import { handlePasswordUpdate } from "./handlers/password.handler.js";
+import { handleEmailUpdate } from "./handlers/email.handler.js";
+import { handleAvatarUpdate } from "./handlers/avatar.handler.js";
+import { handleRankUpdate } from "./handlers/rank.handler.js";
 
 
 export class UserService {
@@ -67,112 +72,39 @@ export class UserService {
             );
 
         } catch (error) {
+            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
+        }
+    };
+
+    async updateByCondition(req, res) {
+        try {
+            const id = mongoose.Types.ObjectId(req.body.id);
+
+            if (req.body.fullName) {
+                return handleFullNameUpdate({ id, fullName: req.body.fullName, res });
+            }
+
+            if (req.body.password) {
+                return handlePasswordUpdate({ id, password: req.body.password, res })
+            }
+
+            if (req.body.email) {
+                return handleEmailUpdate({ id, email: req.body.email, res })
+            }
+
+            if (req.body.avatarUrl) {
+                return handleAvatarUpdate({ id, avatarUrl: req.body.avatarUrl, res })
+            }
+
+            if (req.body.rank) {
+                return handleRankUpdate({ id, rank: req.body.rank, res })
+            }
+
+            return res.status(400).json({ message: "Неправильный формат запроса", statusCode: 400 })
+
+        } catch (error) {
             console.log(error)
             return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
         }
-    };
-
-    async updateUserLogin(req, res) {
-        try {
-            const user = await UserModel.findByIdAndUpdate(req.body.id, {
-                fullName: req.body.fullName,
-            });
-
-
-            if (!user) {
-                return res.status(404).json({ message: "Пользователь не найден", statusCode: 404 })
-            }
-
-            const { ...userData } = user._doc;
-
-            return res.status(200).json({ userData, statusCode: 200 })
-        } catch (error) {
-            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
-        }
-    };
-
-    async updateUserPassword(req, res) {
-        try {
-            const password = req.body.password;
-            const salt = await bcrypt.genSalt(10);
-            const phash = await bcrypt.hash(password, salt);
-
-            const user = await UserModel.findByIdAndUpdate(req.body.id, {
-                passwordHash: phash,
-            });
-
-            if (!user) {
-                return res.status(404).json({ message: "Пользователь не найден", statusCode: 404 })
-            }
-
-            const { passwordHash, ...userData } = user._doc;
-
-            return res.status(200).json({ userData, statusCode: 200 })
-        } catch (error) {
-            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
-        }
-    };
-
-    async updateUserEmail(req, res) {
-        try {
-            const checkNewUserEmail = await UserModel.findOne({ email: req.body.email });
-            if (checkNewUserEmail) {
-                return res.status(400).json({ message: "Данная почта уже используется!", statusCode: 400 })
-            }
-
-            const user = await UserModel.findByIdAndUpdate(req.body.id, {
-                email: req.body.email,
-            });
-
-            if (!user) {
-                return res.status(404).json({ message: "Пользователь не найден", statusCode: 404 })
-            }
-
-            const { ...userData } = user._doc;
-
-            return res.status(200).json({ userData, statusCode: 200 })
-        } catch (error) {
-            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
-        }
-    };
-
-
-    async updateUserAvatar(req, res) {
-        try {
-            const user = await UserModel.findByIdAndUpdate(req.body.id, {
-                avatarUrl: req.body.avatarUrl,
-            });
-
-            if (!user) {
-                return res.status(404).json({ message: "Пользователь не найден", statusCode: 404 })
-            }
-
-            const { ...userData } = user._doc;
-
-            return res.status(200).json({ userData, statusCode: 200 })
-        } catch (error) {
-            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
-        }
-    };
-
-
-    async updateUserRank(req, res) {
-        try {
-            const user = await UserModel.findByIdAndUpdate(req.body.id, {
-                rank: req.body.rank,
-            });
-
-            if (!user) {
-                return res.status(404).json({ message: "Пользователь не найден", statusCode: 404 })
-            }
-
-            const { ...userData } = user._doc;
-
-            return res.status(200).json({ userData, statusCode: 200 })
-        } catch (error) {
-            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
-        }
-    };
-
-
+    }
 }

@@ -17,24 +17,8 @@ export class UserController {
     return await this._userService.delete(req, res);
   }
 
-  async updateUserLogin(req, res) {
-    return await this._userService.updateUserLogin(req, res);
-  }
-
-  async updateUserPassword(req, res) {
-    return await this._userService.updateUserPassword(req, res);
-  }
-
-  async updateUserEmail(req, res) {
-    return await this._userService.updateUserEmail(req, res);
-  }
-
-  async updateUserAvatar(req, res) {
-    return await this._userService.updateUserAvatar(req, res);
-  }
-
-  async updateUserRank(req, res) {
-    return await this._userService.updateUserRank(req, res);
+  async updateByCondition(req, res) {
+    return await this._userService.updateByCondition(req, res);
   }
 }
 

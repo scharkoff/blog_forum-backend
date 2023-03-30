@@ -1,0 +1,14 @@
+import UserModel from "../entity/User.js";
+
+export async function handleRankUpdate(props) {
+    const user = await UserModel.findByIdAndUpdate(props.id, {
+        rank: props.rank,
+    }).exec();
+
+    if (!user) {
+        return props.res.status(404).json({ message: "Пользователь не найден", statusCode: 404 })
+    }
+
+    const { passwordHash, ...userData } = user._doc;
+    return props.res.status(200).json({ userData, message: "Ранг успешно изменен", statusCode: 200 })
+}
