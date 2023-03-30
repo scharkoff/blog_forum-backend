@@ -8,23 +8,23 @@ export const commentsRouter = Router();
 const commentController = new CommentController();
 
 commentsRouter.post(
-  "/posts/comments/:id",
+  "/comments/:id",
   checkAuth,
   handleValidationErrors,
   commentController.create.bind(commentController)
 );
 
-commentsRouter.get("/posts/comments", commentController.getAll.bind(commentController));
+commentsRouter.get("/comments", commentController.getAll.bind(commentController));
 
 commentsRouter.delete(
-  "/posts/comments/:id",
+  "/comments/:id",
   checkAuth,
   handleValidationErrors,
   commentController.remove.bind(commentController)
 );
 
 commentsRouter.patch(
-  "/posts/comments/:id",
+  "/comments/:id",
   checkAuth,
   handleValidationErrors,
   commentController.update.bind(commentController)

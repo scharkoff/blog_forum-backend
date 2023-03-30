@@ -2,50 +2,43 @@ import UserModel from "./entity/User.js";
 import PostModel from "../post/entity/Post.js";
 import CommentModel from "../comment/entity/Comment.js";
 import { createResponse } from "../../utils/createResponse.js";
-
+import { notFoundException } from "../../errors/NotFoundException/index.js";
+import { internalServerError } from "../../errors/InternalServerError/index.js";
 
 export class UserService {
     constructor() { }
 
-    async getUsers(req, res) {
+    async findAll(req, res) {
         try {
             const users = await UserModel.find().exec();
 
             return createResponse(res, 200, "Пользователи успешно получены!", "success", { users });
         } catch (error) {
-            return createResponse(res, 500, "Не удалось получить пользователей. Что-то пошло не так!", "error", { error });
+            return res.status(500).json(internalServerError);
         }
     };
 
-    async getUserById(req, res) {
+    async findOneById(req, res) {
         try {
             const userId = req.params.id;
-            UserModel.findById(
-                {
-                    _id: userId,
-                },
-                (err, doc) => {
-                    if (err) {
-                        return createResponse(res, 500, "Не удалось получить пользователя!", "error", { err });
-                    }
+            const user = await UserModel.findById({ _id: userId, }).exec();
 
-                    if (!doc) {
-                        return createResponse(res, 404, "Пользователь не найден!", "error");
-                    }
+            if (!user) {
+                return res.json(notFoundException("Пользователь не найден"))
+            }
 
-                    return createResponse(res, 200, "Пользователь успешно найден!", "success");
-                }
-            );
+            return res.status(200).json({ user, statusCode: 200 })
 
         } catch (error) {
-            return createResponse(res, 500, "Не удалось получить пользователя. Что-то пошло не так!", "error", { error });
+            return res.status(500).json(internalServerError);
         }
     }
 
-    async deleteUser(req, res) {
+    async delete(req, res) {
         try {
             const userId = req.params.id;
-            UserModel.findOneAndDelete(
+
+            await UserModel.findOneAndDelete(
                 {
                     _id: userId,
                 },
@@ -58,9 +51,9 @@ export class UserService {
                         return createResponse(res, 404, "Пользователь не найден!", "error");
                     }
 
-                    return createResponse(res, 200, "Пользователь успешно удален!", "success");
+                    return res.status(500).json(internalServerError);
                 }
-            );
+            ).exec();
 
 
             await CommentModel.find({
@@ -76,7 +69,7 @@ export class UserService {
                 .deleteMany()
                 .exec();
         } catch (error) {
-            return createResponse(res, 500, "Не удалось удалить пользователя. Что-то пошло не так!", "error", { error });
+            return res.status(500).json(internalServerError);
         }
     };
 
@@ -95,7 +88,7 @@ export class UserService {
 
             return createResponse(res, 200, "Логин успешно изменен!", "success", { userData });
         } catch (error) {
-            return createResponse(res, 500, "Не удалось изменить логин. Что-то пошло не так!", "error", { error });
+            return res.status(500).json(internalServerError);
         }
     };
 
@@ -117,7 +110,7 @@ export class UserService {
 
             return createResponse(res, 200, "Пароль успешно изменен!", "success", { userData });
         } catch (error) {
-            return createResponse(res, 500, "Не удалось изменить пароль. Что-то пошло не так!", "error", { error });
+            return res.status(500).json(internalServerError);
         }
     };
 
@@ -140,7 +133,7 @@ export class UserService {
 
             return createResponse(res, 200, "Почта успешно изменена!", "success", { userData });
         } catch (error) {
-            return createResponse(res, 500, "Не удалось изменить почту. Что-то пошло не так!", "error", { error });
+            return res.status(500).json(internalServerError);
         }
     };
 
@@ -159,7 +152,7 @@ export class UserService {
 
             return createResponse(res, 200, "Аватар успешно изменен!", "success", { userData });
         } catch (error) {
-            return createResponse(res, 500, "Не удалось изменить аватар. Что-то пошло не так!", "error", { error });
+            return res.status(500).json(internalServerError);
         }
     };
 
@@ -178,7 +171,7 @@ export class UserService {
 
             return createResponse(res, 200, "Ранг успешно изменен!", "success", { userData });
         } catch (error) {
-            return createResponse(res, 500, "Что-то пошло не так!", "error", { error });
+            return res.status(500).json(internalServerError);
         }
     };
 

@@ -5,16 +5,16 @@ export class UserController {
     this._userService = new UserService();
   }
 
-  async getUsers(req, res) {
-    return await this._userService.getUsers(req, res);
+  async findAll(req, res) {
+    return await this._userService.findAll(req, res);
   }
 
-  async getUserById(req, res) {
-    return await this._userService.getUserById(req, res);
+  async findOneById(req, res) {
+    return await this._userService.findOneById(req, res);
   }
 
-  async deleteUser(req, res) {
-    return await this._userService.deleteUser(req, res);
+  async delete(req, res) {
+    return await this._userService.delete(req, res);
   }
 
   async updateUserLogin(req, res) {
