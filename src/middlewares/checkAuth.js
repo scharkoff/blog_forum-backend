@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-import { createResponse } from "../utils/createResponse.js";
 
 export default (req, res, next) => {
   const token = (req.headers.authorization || "").replace(/Bearer\s?/, "");
@@ -11,9 +10,9 @@ export default (req, res, next) => {
 
       next();
     } catch (error) {
-      createResponse(res, 403, "Нет доступа!")
+      return res.status(403).json({ message: "Нет доступа" });
     }
   } else {
-    createResponse(res, 403, "Нет доступа!")
+    return res.status(403).json({ message: "Нет доступа" });
   }
 };

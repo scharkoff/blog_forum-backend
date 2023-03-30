@@ -2,7 +2,6 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 import UserModel from "../user/entity/User.js";
-import { createResponse } from "../../utils/createResponse.js";
 
 const defaultAvatar = "../../../uploads/noavatar.png";
 
@@ -24,8 +23,9 @@ export class AuthService {
             });
 
             const checkNewUserData = await UserModel.findOne({ email: req.body.email });
+
             if (checkNewUserData) {
-                return createResponse(res, 400, "Данная почта уже используется!", "error");
+                return res.status(400).json({ message: "Данная почта уже используется", statusCode: 400 });
             }
 
             const user = await doc.save();
@@ -42,9 +42,9 @@ export class AuthService {
 
             const { passwordHash, ...userData } = user._doc;
 
-            return createResponse(res, 200, "Регистрация прошла успешно!", "success", { userData, token });
+            return res.status(200).json({ userData, token, statusCode: 200 });
         } catch (error) {
-            return createResponse(res, 500, "Не удалось зарегистрироваться. Что-то пошло не так!", "error", { error });
+            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
         }
     };
 
@@ -54,7 +54,7 @@ export class AuthService {
             const user = await UserModel.findOne({ email: req.body.email });
 
             if (!user) {
-                return createResponse(res, 400, "Неверный логин или пароль!", "error");
+                return res.status(400).json({ message: "Неверный логин или пароль!", statusCode: 400 });
             }
 
             const isValid = await bcrypt.compare(
@@ -63,7 +63,7 @@ export class AuthService {
             );
 
             if (!isValid) {
-                return createResponse(res, 400, "Неверный логин или пароль!", "error");
+                return res.status(400).json({ message: "Неверный логин или пароль!", statusCode: 400 });
             }
 
             const token = jwt.sign(
@@ -78,10 +78,9 @@ export class AuthService {
 
             const { passwordHash, ...userData } = user._doc;
 
-            return createResponse(res, 200, "Авторизация прошла успешно!", "success", { userData, token });
+            return res.status(200).json({ userData, token, statusCode: 200 });
         } catch (error) {
-            console.log(error)
-            return createResponse(res, 500, "Не удалось авторизоваться. Что-то пошло не так!", "error", { error });
+            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
         }
     };
 
@@ -91,14 +90,14 @@ export class AuthService {
             const user = await UserModel.findById(req.userId);
 
             if (!user) {
-                return createResponse(res, 404, "Пользователь не найден!", "error");
+                return res.status(404).json({ message: "Пользователь не найден!", statusCode: 404 })
             }
 
             const { passwordHash, ...userData } = user._doc;
 
-            return createResponse(res, 200, "Авторизация прошла успешно!", "success", { userData });
+            return res.status(200).json({ userData, statusCode: 200 });
         } catch (error) {
-            return createResponse(res, 500, "Не удалось провести идентификацию. Что-то пошло не так!", "error", { error });
+            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
         }
     };
 }

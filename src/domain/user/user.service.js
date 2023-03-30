@@ -1,7 +1,6 @@
 import UserModel from "./entity/User.js";
 import PostModel from "../post/entity/Post.js";
 import CommentModel from "../comment/entity/Comment.js";
-import { createResponse } from "../../utils/createResponse.js";
 import mongoose from "mongoose";
 
 
@@ -118,7 +117,7 @@ export class UserService {
         try {
             const checkNewUserEmail = await UserModel.findOne({ email: req.body.email });
             if (checkNewUserEmail) {
-                return createResponse(res, 400, "Данная почта уже используется!", "error");
+                return res.status(400).json({ message: "Данная почта уже используется!", statusCode: 400 })
             }
 
             const user = await UserModel.findByIdAndUpdate(req.body.id, {
