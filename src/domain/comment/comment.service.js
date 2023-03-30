@@ -1,6 +1,5 @@
 import CommentModel from "./entity/Comment.js";
 import PostModel from "../post/entity/Post.js";
-import { createResponse } from "../../utils/createResponse.js";
 
 export class CommentService {
     constructor() { }
@@ -14,6 +13,22 @@ export class CommentService {
 
             return res.status(200).json({ comments, statusCode: 200 })
         } catch (error) {
+            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
+        }
+    };
+
+    async findLasts(req, res) {
+        try {
+            let comments = await CommentModel.find()
+                .populate("user")
+                .populate("post")
+                .exec();
+
+            comments = comments.slice(0, 5).reverse();
+
+            return res.status(200).json({ comments, statusCode: 200 })
+        } catch (error) {
+            console.log(error)
             return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
         }
     };
@@ -34,6 +49,10 @@ export class CommentService {
                 (err, doc) => {
                     if (err) {
                         return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
+                    }
+
+                    if (!doc) {
+                        return res.status(404).json({ message: "Запись не найдена", statusCode: 404 })
                     }
                 }
             );

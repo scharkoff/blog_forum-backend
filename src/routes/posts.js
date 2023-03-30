@@ -18,7 +18,7 @@ postsRouter.post(
   postService.create.bind(postService)
 );
 
-postsRouter.get("/tags", postService.getLastTags.bind(postService));
+postsRouter.get("/tags/lasts", postService.getLastTags.bind(postService));
 
 postsRouter.get("/posts", postService.findAll.bind(postService));
 

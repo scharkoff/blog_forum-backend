@@ -9,6 +9,10 @@ export class CommentController {
     return await this._commentService.findAll(req, res);
   }
 
+  async findLasts(req, res) {
+    return await this._commentService.findLasts(req, res);
+  }
+
   async create(req, res) {
     return await this._commentService.create(req, res);
   }

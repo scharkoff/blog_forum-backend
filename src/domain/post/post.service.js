@@ -2,7 +2,6 @@ import PostModel from "./entity/Post.js";
 import CommentModel from "../comment/entity/Comment.js";
 import mongoose from "mongoose";
 
-import { createResponse } from "../../utils/createResponse.js";
 
 export class PostService {
     constructor() { }
@@ -11,9 +10,9 @@ export class PostService {
         try {
             const posts = await PostModel.find().populate("user").exec();
 
-            return createResponse(res, 200, "Статьи успешно получены!", "success", { posts });
+            return res.status(200).json({ posts, statusCode: 200 })
         } catch (error) {
-            return createResponse(res, 500, "Не удалось получить статьи. Что-то пошло не так!", "error", { error });
+            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
         }
     };
 
@@ -28,11 +27,11 @@ export class PostService {
                 .filter((tag) => tag);
 
 
-            const fiveTags = [...new Set(tags)].slice(0, 5);
+            const lastTags = [...new Set(tags)].slice(0, 5);
 
-            return createResponse(res, 200, "Тэги успешно получены!", "success", { fiveTags });
+            return res.status(200).json({ lastTags, statusCode: 200 })
         } catch (error) {
-            return createResponse(res, 500, "Не удалось получить тэги. Что-то пошло не так!", "error", { error });
+            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
         }
     };
 
@@ -56,18 +55,18 @@ export class PostService {
                 },
                 (err, post) => {
                     if (err) {
-                        return createResponse(res, 500, "Не удалось получить статью!", "error", { err });
+                        return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
                     }
 
                     if (!post) {
-                        return createResponse(res, 404, "Статья не найдена!", "error");
+                        return res.status(404).json({ message: "Статья не найдена", statusCode: 404 })
                     }
 
-                    return createResponse(res, 200, "Статья успешно получена!", "success", { post });
+                    return res.status(200).json({ post, statusCode: 200 })
                 }
             ).populate("user");
         } catch (error) {
-            return createResponse(res, 500, "Не удалось получить статью. Что-то пошло не так!", "error", { error });
+            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
         }
     };
 
@@ -87,18 +86,18 @@ export class PostService {
                 },
                 (err, doc) => {
                     if (err) {
-                        return createResponse(res, 500, "Не удалось удалить статью!", "error", { err });
+                        return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
                     }
 
                     if (!doc) {
-                        return createResponse(res, 404, "Статья не найдена!", "error");
+                        return res.status(404).json({ message: "Статья не найдена", statusCode: 404 })
                     }
 
-                    return createResponse(res, 200, "Статья успешно удалена!", "success");
+                    return res.status(200).json({ message: "Статья успешно удалена", statusCode: 200 })
                 }
             );
         } catch (error) {
-            return createResponse(res, 500, "Не удалось удалить статью. Что-то пошло не так!", "error", { error });
+            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
         }
     };
 
@@ -114,9 +113,9 @@ export class PostService {
 
             const post = await doc.save();
 
-            return createResponse(res, 200, "Статья успешно создана!", "success", { post });
+            return res.status(200).json({ post, statusCode: 200 })
         } catch (error) {
-            return createResponse(res, 500, "Не удалось создать статью. Что-то пошло не так!", "error", { error });
+            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
         }
     };
 
@@ -138,9 +137,9 @@ export class PostService {
                 }
             );
 
-            return createResponse(res, 200, "Статья успешно изменена!", "success");
+            return res.status(200).json({ message: "Статья успешно изменена", statusCode: 200 })
         } catch (error) {
-            return createResponse(res, 500, "Не удалось обновить статью. Что-то пошло не так!", "error", { error });
+            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
         }
     };
 }

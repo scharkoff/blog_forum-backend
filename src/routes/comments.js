@@ -16,6 +16,8 @@ commentsRouter.post(
 
 commentsRouter.get("/comments", commentController.findAll.bind(commentController));
 
+commentsRouter.get("/comments/lasts", commentController.findLasts.bind(commentController));
+
 commentsRouter.delete(
   "/comments/:id",
   checkAuth,
