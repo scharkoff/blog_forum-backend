@@ -17,7 +17,7 @@ const userController = new UserController();
 
 usersRouter.get("/users", checkAuth, userController.findAll.bind(userController));
 
-usersRouter.get("/users/:id", userController.findOneById.bind(userController))
+usersRouter.get("/users/:id", checkAuth, userController.findOneById.bind(userController))
 
 usersRouter.delete("/users/:id", checkAuth, userController.delete.bind(userController));
 

@@ -11,7 +11,7 @@ export const postsRouter = Router();
 const postService = new PostService();
 
 postsRouter.post(
-  "/posts/create",
+  "/posts",
   checkAuth,
   postCreateValidation,
   handleValidationErrors,
@@ -20,11 +20,9 @@ postsRouter.post(
 
 postsRouter.get("/tags", postService.getLastTags.bind(postService));
 
-postsRouter.get("/posts", postService.getAll.bind(postService));
+postsRouter.get("/posts", postService.findAll.bind(postService));
 
-postsRouter.get("/posts/:id", postService.getOne.bind(postService));
-
-postsRouter.get("/posts/tags", postService.getLastTags.bind(postService));
+postsRouter.get("/posts/:id", postService.findOneById.bind(postService));
 
 postsRouter.delete("/posts/:id", checkAuth, postService.remove.bind(postService));
 

@@ -5,16 +5,16 @@ import { createResponse } from "../../utils/createResponse.js";
 export class CommentService {
     constructor() { }
 
-    async getAll(req, res) {
+    async findAll(req, res) {
         try {
             const comments = await CommentModel.find()
                 .populate("user")
                 .populate("post")
                 .exec();
 
-            return createResponse(res, 200, "Комментарии успешно получены!", "success", { comments });
+            return res.status(200).json({ comments, statusCode: 200 })
         } catch (error) {
-            return createResponse(res, 500, "Не удалось получить комментарии. Что-то пошло не так!", "error", { error });
+            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
         }
     };
 
@@ -33,20 +33,20 @@ export class CommentService {
                 { $inc: { commentsCount: 1 } },
                 (err, doc) => {
                     if (err) {
-                        return createResponse(res, 500, "Не удалось создать комментарий!", "error", { err });
+                        return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
                     }
                 }
             );
 
             const comment = await docComment.save();
 
-            return createResponse(res, 200, "Комментарий успешно создан!", "success", { comment });
+            return res.status(200).json({ comment, statusCode: 200 })
         } catch (error) {
-            return createResponse(res, 500, "Не удалось создать комментарий. Что-то пошло не так!", "error", { error });
+            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
         }
     };
 
-    async remove(req, res) {
+    async delete(req, res) {
         try {
             const commentId = req.params.id;
 
@@ -55,11 +55,11 @@ export class CommentService {
                 { $inc: { commentsCount: -1 } },
                 (err, doc) => {
                     if (err) {
-                        return createResponse(res, 500, "Не удалось удалить комментарий. Что-то пошло не так!", "error", { err });
+                        return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
                     }
 
                     if (!doc) {
-                        return createResponse(res, 404, "Не удалось удалить комментарий. Запись не найдена!", "error");
+                        return res.status(404).json({ message: "Запись не найдена", statusCode: 404 })
                     }
                 }
             );
@@ -70,18 +70,18 @@ export class CommentService {
                 },
                 (err, doc) => {
                     if (!doc) {
-                        return createResponse(res, 404, "Не удалось удалить комментарий. Комментарий не найден!", "error");
+                        return res.status(404).json({ message: "Комментарий не найден", statusCode: 404 })
                     }
 
                     if (err) {
-                        return createResponse(res, 500, "Не удалось удалить комментарий. Что-то пошло не так!", "error", { err });
+                        return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
                     }
 
-                    return createResponse(res, 200, "Комментарий успешно удален!", "success");
+                    return res.status(200).json({ message: "Комментарий успешно удален", statusCode: 200 })
                 }
             );
         } catch (error) {
-            return createResponse(res, 500, "Не удалось удалить комментарий. Что-то пошло не так!", "error", { error });
+            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
         }
     };
 
@@ -98,17 +98,18 @@ export class CommentService {
                 },
                 (err, doc) => {
                     if (!doc) {
-                        return createResponse(res, 404, "Не удалось изменить комментарий. Комментарий не найден!", "error");
+                        return res.status(404).json({ message: "Комментарий не найден", statusCode: 404 })
                     }
 
                     if (err) {
-                        return createResponse(res, 500, "Не удалось изменить комментарий. Что-то пошло не так!", "error", { err });
+                        return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
                     }
-                    return createResponse(res, 200, "Комментарий успешно изменен!", "success");
+
+                    return res.status(200).json({ message: "Комментарий успешно изменен", statusCode: 200 })
                 }
             );
         } catch (error) {
-            return createResponse(res, 500, "Не удалось удалить комментарий. Что-то пошло не так!", "error", { error });
+            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
         }
     };
 

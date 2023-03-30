@@ -7,7 +7,7 @@ import { createResponse } from "../../utils/createResponse.js";
 export class PostService {
     constructor() { }
 
-    async getAll(req, res) {
+    async findAll(req, res) {
         try {
             const posts = await PostModel.find().populate("user").exec();
 
@@ -36,7 +36,7 @@ export class PostService {
         }
     };
 
-    async getOne(req, res) {
+    async findOneById(req, res) {
         try {
             const postId = req.params.id;
             const comments = await CommentModel.find({

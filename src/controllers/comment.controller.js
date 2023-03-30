@@ -5,16 +5,16 @@ export class CommentController {
     this._commentService = new CommentService();
   }
 
-  async getAll(req, res) {
-    return await this._commentService.getAll(req, res);
+  async findAll(req, res) {
+    return await this._commentService.findAll(req, res);
   }
 
   async create(req, res) {
     return await this._commentService.create(req, res);
   }
 
-  async remove(req, res) {
-    return await this._commentService.remove(req, res);
+  async delete(req, res) {
+    return await this._commentService.delete(req, res);
   }
 
   async update(req, res) {

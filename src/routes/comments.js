@@ -14,13 +14,13 @@ commentsRouter.post(
   commentController.create.bind(commentController)
 );
 
-commentsRouter.get("/comments", commentController.getAll.bind(commentController));
+commentsRouter.get("/comments", commentController.findAll.bind(commentController));
 
 commentsRouter.delete(
   "/comments/:id",
   checkAuth,
   handleValidationErrors,
-  commentController.remove.bind(commentController)
+  commentController.delete.bind(commentController)
 );
 
 commentsRouter.patch(

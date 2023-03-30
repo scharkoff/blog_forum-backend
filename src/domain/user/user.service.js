@@ -2,8 +2,8 @@ import UserModel from "./entity/User.js";
 import PostModel from "../post/entity/Post.js";
 import CommentModel from "../comment/entity/Comment.js";
 import { createResponse } from "../../utils/createResponse.js";
-import { notFoundException } from "../../errors/NotFoundException/index.js";
-import { internalServerError } from "../../errors/InternalServerError/index.js";
+import mongoose from "mongoose";
+
 
 export class UserService {
     constructor() { }
@@ -12,9 +12,9 @@ export class UserService {
         try {
             const users = await UserModel.find().exec();
 
-            return createResponse(res, 200, "Пользователи успешно получены!", "success", { users });
+            return res.status(200).json({ users, statusCode: 200 })
         } catch (error) {
-            return res.status(500).json(internalServerError);
+            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
         }
     };
 
@@ -24,13 +24,13 @@ export class UserService {
             const user = await UserModel.findById({ _id: userId, }).exec();
 
             if (!user) {
-                return res.json(notFoundException("Пользователь не найден"))
+                return res.status(404).json({ message: "Пользователь не найден", statusCode: 404 })
             }
 
             return res.status(200).json({ user, statusCode: 200 })
 
         } catch (error) {
-            return res.status(500).json(internalServerError);
+            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
         }
     }
 
@@ -38,38 +38,38 @@ export class UserService {
         try {
             const userId = req.params.id;
 
-            await UserModel.findOneAndDelete(
+            UserModel.findOneAndDelete(
                 {
-                    _id: userId,
+                    _id: mongoose.Types.ObjectId(userId),
                 },
-                (err, doc) => {
+                async (err, doc) => {
                     if (err) {
-                        return createResponse(res, 500, "Не удалось удалить пользователя!", "error", { err });
+                        return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
                     }
 
                     if (!doc) {
-                        return createResponse(res, 404, "Пользователь не найден!", "error");
+                        return res.status(404).json({ message: "Пользователь не найден", statusCode: 404 })
                     }
 
-                    return res.status(500).json(internalServerError);
+                    await CommentModel.find({
+                        user: mongoose.Types.ObjectId(userId),
+                    })
+                        .deleteMany();
+
+
+                    await PostModel.find({
+                        user: mongoose.Types.ObjectId(userId),
+                    })
+                        .deleteMany();
+
+
+                    return res.status(200).json({ message: "Пользователь успешно удален", statusCode: 200 });
                 }
-            ).exec();
+            );
 
-
-            await CommentModel.find({
-                user: mongoose.Types.ObjectId(userId),
-            })
-                .deleteMany()
-                .exec();
-
-
-            await PostModel.find({
-                user: mongoose.Types.ObjectId(userId),
-            })
-                .deleteMany()
-                .exec();
         } catch (error) {
-            return res.status(500).json(internalServerError);
+            console.log(error)
+            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
         }
     };
 
@@ -81,14 +81,14 @@ export class UserService {
 
 
             if (!user) {
-                return createResponse(res, 404, "Пользователь не найден!", "error");
+                return res.status(404).json({ message: "Пользователь не найден", statusCode: 404 })
             }
 
             const { ...userData } = user._doc;
 
-            return createResponse(res, 200, "Логин успешно изменен!", "success", { userData });
+            return res.status(200).json({ userData, statusCode: 200 })
         } catch (error) {
-            return res.status(500).json(internalServerError);
+            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
         }
     };
 
@@ -103,14 +103,14 @@ export class UserService {
             });
 
             if (!user) {
-                return createResponse(res, 404, "Пользователь не найден!", "error");
+                return res.status(404).json({ message: "Пользователь не найден", statusCode: 404 })
             }
 
             const { passwordHash, ...userData } = user._doc;
 
-            return createResponse(res, 200, "Пароль успешно изменен!", "success", { userData });
+            return res.status(200).json({ userData, statusCode: 200 })
         } catch (error) {
-            return res.status(500).json(internalServerError);
+            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
         }
     };
 
@@ -126,14 +126,14 @@ export class UserService {
             });
 
             if (!user) {
-                return createResponse(res, 404, "Пользователь не найден!", "error");
+                return res.status(404).json({ message: "Пользователь не найден", statusCode: 404 })
             }
 
             const { ...userData } = user._doc;
 
-            return createResponse(res, 200, "Почта успешно изменена!", "success", { userData });
+            return res.status(200).json({ userData, statusCode: 200 })
         } catch (error) {
-            return res.status(500).json(internalServerError);
+            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
         }
     };
 
@@ -145,14 +145,14 @@ export class UserService {
             });
 
             if (!user) {
-                return createResponse(res, 404, "Пользователь не найден!", "error");
+                return res.status(404).json({ message: "Пользователь не найден", statusCode: 404 })
             }
 
             const { ...userData } = user._doc;
 
-            return createResponse(res, 200, "Аватар успешно изменен!", "success", { userData });
+            return res.status(200).json({ userData, statusCode: 200 })
         } catch (error) {
-            return res.status(500).json(internalServerError);
+            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
         }
     };
 
@@ -164,14 +164,14 @@ export class UserService {
             });
 
             if (!user) {
-                return createResponse(res, 404, "Пользователь не найден!", "error");
+                return res.status(404).json({ message: "Пользователь не найден", statusCode: 404 })
             }
 
             const { ...userData } = user._doc;
 
-            return createResponse(res, 200, "Ранг успешно изменен!", "success", { userData });
+            return res.status(200).json({ userData, statusCode: 200 })
         } catch (error) {
-            return res.status(500).json(internalServerError);
+            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
         }
     };
 

@@ -6,16 +6,16 @@ export class PostController {
     this._postService = new PostService();
   }
 
-  async getAll(req, res) {
-    return await this._postService.getAll(req, res);
+  async findAll(req, res) {
+    return await this._postService.findAll(req, res);
   }
 
   async getLastTags(req, res) {
     return await this._postService.getLastTags(req, res);
   }
 
-  async getOne(req, res) {
-    return await this._postService.getOne(req, res);
+  async findOneById(req, res) {
+    return await this._postService.findOneById(req, res);
   }
 
   async remove(req, res) {
