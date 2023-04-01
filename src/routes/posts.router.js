@@ -1,10 +1,8 @@
 import { Router } from "express";
-
-import { postCreateValidation } from "../validations/validations.js";
-
 import checkAuth from "../middlewares/checkAuth.js";
 import handleValidationErrors from "../middlewares/handleValidationErrors.js";
 import { PostService } from "../domain/post/post.service.js";
+import { postCreateValidation } from "../domain/post/validations/post.validation.js";
 
 export const postsRouter = Router();
 

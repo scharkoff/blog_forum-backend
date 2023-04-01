@@ -1,5 +1,6 @@
 import CommentModel from "./entity/Comment.js";
 import PostModel from "../post/entity/Post.js";
+import mongoose from "mongoose";
 
 export class CommentService {
     constructor() { }
@@ -28,7 +29,6 @@ export class CommentService {
 
             return res.status(200).json({ comments, statusCode: 200 })
         } catch (error) {
-            console.log(error)
             return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
         }
     };
@@ -67,7 +67,7 @@ export class CommentService {
 
     async delete(req, res) {
         try {
-            const commentId = req.params.id;
+            const commentId = mongoose.Types.ObjectId(req.params.id);
 
             PostModel.findOneAndUpdate(
                 commentId,
@@ -106,7 +106,7 @@ export class CommentService {
 
     async update(req, res) {
         try {
-            const commentId = req.body.commentId;
+            const commentId = mongoose.Types.ObjectId(req.body.commentId);
 
             CommentModel.findOneAndUpdate(
                 {

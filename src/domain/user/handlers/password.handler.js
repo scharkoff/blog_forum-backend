@@ -6,7 +6,7 @@ export async function handlePasswordUpdate(props) {
         salt = await bcrypt.genSalt(10),
         phash = await bcrypt.hash(password, salt);
 
-    const user = await UserModel.findByIdAndUpdate(props.id, {
+    const user = await UserModel.findByIdAndUpdate(props.userId, {
         passwordHash: phash,
     }).exec();
 

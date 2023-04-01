@@ -1,16 +1,10 @@
 import { Router } from "express";
 import {
-  fullNameValidation,
-  passwordValidation,
-  emailValidation,
-  avatarValidation,
-  loginValidation,
-} from "../validations/validations.js";
-import {
   UserController,
 } from "../controllers/user.controller.js";
 import checkAuth from "../middlewares/checkAuth.js";
 import handleValidationErrors from "../middlewares/handleValidationErrors.js";
+import { userUpdateValidation } from "../middlewares/user-update.validation.js";
 
 export const usersRouter = Router();
 
@@ -25,6 +19,8 @@ usersRouter.delete("/users/:id", checkAuth, userController.delete.bind(userContr
 usersRouter.patch(
   "/users/:id",
   checkAuth,
+  userUpdateValidation,
+  handleValidationErrors,
   userController.updateByCondition.bind(userController)
 );
 

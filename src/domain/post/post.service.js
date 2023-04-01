@@ -44,7 +44,7 @@ export class PostService {
 
             PostModel.findOneAndUpdate(
                 {
-                    _id: postId,
+                    _id: mongoose.Types.ObjectId(postId),
                 },
                 {
                     $inc: { viewsCount: 1 },
@@ -82,7 +82,7 @@ export class PostService {
 
             PostModel.findOneAndDelete(
                 {
-                    _id: postId,
+                    _id: mongoose.Types.ObjectId(postId),
                 },
                 (err, doc) => {
                     if (err) {
@@ -126,7 +126,7 @@ export class PostService {
 
             await PostModel.findOneAndUpdate(
                 {
-                    _id: postId,
+                    _id: mongoose.Types.ObjectId(postId),
                 },
                 {
                     title: req.body.title,

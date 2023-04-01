@@ -1,7 +1,7 @@
 import UserModel from "../entity/User.js";
 
 export async function handleAvatarUpdate(props) {
-    const user = await UserModel.findByIdAndUpdate(props.id, {
+    const user = await UserModel.findByIdAndUpdate(props.userId, {
         avatarUrl: props.avatarUrl,
     }).exec();
 

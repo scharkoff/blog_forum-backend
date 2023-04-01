@@ -7,7 +7,7 @@ export async function handleEmailUpdate(props) {
         return props.res.status(400).json({ message: "Данная почта уже используется", statusCode: 400 })
     }
 
-    const user = await UserModel.findByIdAndUpdate(props.id, {
+    const user = await UserModel.findByIdAndUpdate(props.userId, {
         email: props.email,
     }).exec();
 

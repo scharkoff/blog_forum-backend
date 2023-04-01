@@ -25,7 +25,7 @@ export class UserService {
     async findOneById(req, res) {
         try {
             const userId = req.params.id;
-            const user = await UserModel.findById({ _id: userId, }).exec();
+            const user = await UserModel.findById({ _id: mongoose.Types.ObjectId(userId), }).exec();
 
             if (!user) {
                 return res.status(404).json({ message: "Пользователь не найден", statusCode: 404 })
@@ -78,32 +78,31 @@ export class UserService {
 
     async updateByCondition(req, res) {
         try {
-            const id = mongoose.Types.ObjectId(req.body.id);
+            const userId = mongoose.Types.ObjectId(req.body.id);
 
             if (req.body.fullName) {
-                return handleFullNameUpdate({ id, fullName: req.body.fullName, res });
+                return handleFullNameUpdate({ userId, fullName: req.body.fullName, res });
             }
 
             if (req.body.password) {
-                return handlePasswordUpdate({ id, password: req.body.password, res })
+                return handlePasswordUpdate({ userId, password: req.body.password, res })
             }
 
             if (req.body.email) {
-                return handleEmailUpdate({ id, email: req.body.email, res })
+                return handleEmailUpdate({ userId, email: req.body.email, res })
             }
 
             if (req.body.avatarUrl) {
-                return handleAvatarUpdate({ id, avatarUrl: req.body.avatarUrl, res })
+                return handleAvatarUpdate({ userId, avatarUrl: req.body.avatarUrl, res })
             }
 
             if (req.body.rank) {
-                return handleRankUpdate({ id, rank: req.body.rank, res })
+                return handleRankUpdate({ userId, rank: req.body.rank, res })
             }
 
             return res.status(400).json({ message: "Неправильный формат запроса", statusCode: 400 })
 
         } catch (error) {
-            console.log(error)
             return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
         }
     }
