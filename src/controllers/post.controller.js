@@ -10,6 +10,14 @@ export class PostController {
     return await this._postService.findAll(req, res);
   }
 
+  async findByPage(req, res) {
+    return await this._postService.findByPage(req, res);
+  }
+
+  async findByPageLikeTag(req, res) {
+    return await this._postService.findByPageLikeTag(req, res);
+  }
+
   async getLastTags(req, res) {
     return await this._postService.getLastTags(req, res);
   }

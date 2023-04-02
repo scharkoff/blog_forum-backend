@@ -16,6 +16,76 @@ export class PostService {
         }
     };
 
+    async findByPage(req, res) {
+        try {
+            const { page, pageSize, sortType } = req.query;
+            const skip = (page - 1) * pageSize;
+            const limit = parseInt(pageSize);
+
+            console.log(page, pageSize, sortType)
+
+            const postsCount = await PostModel.countDocuments().exec();
+
+            const sortOptions = {};
+
+            if (sortType === "new") {
+                sortOptions.createdAt = -1;
+            }
+
+            if (sortType === "popular") {
+                sortOptions.viewsCount = -1;
+            }
+
+            const posts = await PostModel.find()
+                .sort(sortOptions)
+                .populate("user")
+                .skip(skip)
+                .limit(limit)
+                .exec();
+
+            return res.status(200).json({ posts, postsCount, statusCode: 200 })
+        } catch (error) {
+            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
+        }
+    }
+
+    async findByPageLikeTag(req, res) {
+        try {
+            const { page, pageSize, sortType } = req.query;
+            const tag = req.params.id;
+            console.log("tag", tag)
+            const skip = (page - 1) * pageSize;
+            const limit = parseInt(pageSize);
+
+            console.log(page, pageSize, sortType)
+
+            const sortOptions = {};
+
+            if (sortType === "new") {
+                sortOptions.createdAt = -1;
+            }
+
+            if (sortType === "popular") {
+                sortOptions.viewsCount = -1;
+            }
+
+            console.log(sortOptions)
+
+            const postsCount = await PostModel.countDocuments().exec();
+
+            const posts = await PostModel.find({ tags: tag })
+                .sort(sortOptions)
+                .populate("user")
+                .skip(skip)
+                .limit(limit)
+                .exec();
+
+            return res.status(200).json({ posts, postsCount, statusCode: 200 })
+        } catch (error) {
+            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
+        }
+    }
+
     async getLastTags(req, res) {
         try {
             const posts = await PostModel.find().exec();

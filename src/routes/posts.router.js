@@ -1,34 +1,38 @@
 import { Router } from "express";
 import checkAuth from "../middlewares/checkAuth.js";
 import handleValidationErrors from "../middlewares/handleValidationErrors.js";
-import { PostService } from "../domain/post/post.service.js";
 import { postCreateValidation } from "../domain/post/validations/post.validation.js";
+import { PostController } from "../controllers/post.controller.js";
 
 export const postsRouter = Router();
 
-const postService = new PostService();
+const postController = new PostController();
 
 postsRouter.post(
   "/posts",
   checkAuth,
   postCreateValidation,
   handleValidationErrors,
-  postService.create.bind(postService)
+  postController.create.bind(postController)
 );
 
-postsRouter.get("/tags/lasts", postService.getLastTags.bind(postService));
+postsRouter.get("/tags/lasts", postController.getLastTags.bind(postController));
 
-postsRouter.get("/posts", postService.findAll.bind(postService));
+postsRouter.get("/posts/all", postController.findAll.bind(postController));
 
-postsRouter.get("/posts/:id", postService.findOneById.bind(postService));
+postsRouter.get("/posts/tag/:id", postController.findByPageLikeTag.bind(postController));
 
-postsRouter.delete("/posts/:id", checkAuth, postService.remove.bind(postService));
+postsRouter.get("/posts", postController.findByPage.bind(postController));
+
+postsRouter.get("/posts/:id", postController.findOneById.bind(postController));
+
+postsRouter.delete("/posts/:id", checkAuth, postController.remove.bind(postController));
 
 postsRouter.patch(
   "/posts/:id",
   checkAuth,
   postCreateValidation,
   handleValidationErrors,
-  postService.update.bind(postService)
+  postController.update.bind(postController)
 );
 
