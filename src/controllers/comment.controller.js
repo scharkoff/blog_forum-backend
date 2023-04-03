@@ -1,4 +1,4 @@
-import { CommentService } from "../domain/comment/comment.service.js";
+import { CommentService } from '../domain/comment/comment.service.js';
 
 export class CommentController {
   constructor() {
@@ -24,6 +24,4 @@ export class CommentController {
   async update(req, res) {
     return await this._commentService.update(req, res);
   }
-
 }
-

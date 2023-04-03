@@ -18,6 +18,7 @@
   <li>React Router v6</li>
   <li>React Markdown / Simple Editor</li>
   <li>React Paginate</li>
+  <li>React Image</li>
   <li>Axios</li>
 </ul>
 
@@ -31,4 +32,12 @@
   <li>MongoDB</li>
   <li>JWT</li>
   <li>Multer</li>
+</ul>
+
+`Tools:`
+
+<ul>
+  <li>ESlint</li>
+  <li>Prettier</li>
+  <li>Postman</li>
 </ul>

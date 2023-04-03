@@ -1,4 +1,4 @@
-import { UserService } from "../domain/user/user.service.js";
+import { UserService } from '../domain/user/user.service.js';
 
 export class UserController {
   constructor() {
@@ -21,4 +21,3 @@ export class UserController {
     return await this._userService.updateByCondition(req, res);
   }
 }
-

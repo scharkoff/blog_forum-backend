@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const PostSchema = new mongoose.Schema(
   {
@@ -29,7 +29,7 @@ const PostSchema = new mongoose.Schema(
 
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
   },
@@ -41,7 +41,7 @@ const PostSchema = new mongoose.Schema(
       j: true,
       wtimeout: 1000,
     },
-  }
+  },
 );
 
-export default mongoose.model("Post", PostSchema);
+export default mongoose.model('Post', PostSchema);

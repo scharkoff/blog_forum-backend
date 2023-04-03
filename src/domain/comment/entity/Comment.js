@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const CommentSchema = new mongoose.Schema(
   {
@@ -12,12 +12,12 @@ const CommentSchema = new mongoose.Schema(
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
     post: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Post",
+      ref: 'Post',
       required: true,
     },
     avatarUrl: {
@@ -33,7 +33,7 @@ const CommentSchema = new mongoose.Schema(
       j: true,
       wtimeout: 1000,
     },
-  }
+  },
 );
 
-export default mongoose.model("Comment", CommentSchema);
+export default mongoose.model('Comment', CommentSchema);

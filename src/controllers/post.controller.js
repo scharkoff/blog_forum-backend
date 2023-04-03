@@ -1,5 +1,4 @@
-import { PostService } from "../domain/post/post.service.js";
-
+import { PostService } from '../domain/post/post.service.js';
 
 export class PostController {
   constructor() {
@@ -33,5 +32,4 @@ export class PostController {
   async update(req, res) {
     return await this._postService.update(req, res);
   }
-
 }
