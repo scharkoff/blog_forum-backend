@@ -1,6 +1,8 @@
 import PostModel from "./entity/Post.js";
 import CommentModel from "../comment/entity/Comment.js";
 import mongoose from "mongoose";
+import { createSortOptions } from "./handlers/sorttype.handler.js";
+import { createFilterOptions } from "./handlers/filter.handler.js";
 
 
 export class PostService {
@@ -10,79 +12,37 @@ export class PostService {
         try {
             const posts = await PostModel.find().populate("user").exec();
 
-            return res.status(200).json({ posts, statusCode: 200 })
+            return res.status(200).json({ posts })
         } catch (error) {
-            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
+            return res.status(500).json({ message: "Что-то пошло не так" });
         }
     };
 
     async findByPage(req, res) {
         try {
-            const { page, pageSize, sortType } = req.query;
+            const { page, pageSize, sortType, tag, searchText } = req.query;
+
             const skip = (page - 1) * pageSize;
             const limit = parseInt(pageSize);
 
-            console.log(page, pageSize, sortType)
+            const tagValue = tag === 'null' ? null : tag;
+            const searchValue = searchText === 'null' ? null : searchText;
 
-            const postsCount = await PostModel.countDocuments().exec();
+            const sortOptions = createSortOptions(sortType);
+            const filterOptions = createFilterOptions(searchValue, tagValue);
 
-            const sortOptions = {};
+            const postsCount = await PostModel.countDocuments(filterOptions).exec();
 
-            if (sortType === "new") {
-                sortOptions.createdAt = -1;
-            }
-
-            if (sortType === "popular") {
-                sortOptions.viewsCount = -1;
-            }
-
-            const posts = await PostModel.find()
+            const posts = await PostModel.find(filterOptions)
                 .sort(sortOptions)
                 .populate("user")
                 .skip(skip)
                 .limit(limit)
                 .exec();
 
-            return res.status(200).json({ posts, postsCount, statusCode: 200 })
+            return res.status(200).json({ posts, postsCount });
         } catch (error) {
-            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
-        }
-    }
-
-    async findByPageLikeTag(req, res) {
-        try {
-            const { page, pageSize, sortType } = req.query;
-            const tag = req.params.id;
-            console.log("tag", tag)
-            const skip = (page - 1) * pageSize;
-            const limit = parseInt(pageSize);
-
-            console.log(page, pageSize, sortType)
-
-            const sortOptions = {};
-
-            if (sortType === "new") {
-                sortOptions.createdAt = -1;
-            }
-
-            if (sortType === "popular") {
-                sortOptions.viewsCount = -1;
-            }
-
-            console.log(sortOptions)
-
-            const postsCount = await PostModel.countDocuments().exec();
-
-            const posts = await PostModel.find({ tags: tag })
-                .sort(sortOptions)
-                .populate("user")
-                .skip(skip)
-                .limit(limit)
-                .exec();
-
-            return res.status(200).json({ posts, postsCount, statusCode: 200 })
-        } catch (error) {
-            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
+            return res.status(500).json({ message: "Что-то пошло не так" });
         }
     }
 
@@ -96,12 +56,12 @@ export class PostService {
                 .flat()
                 .filter((tag) => tag);
 
-
             const lastTags = [...new Set(tags)].slice(0, 5);
 
-            return res.status(200).json({ lastTags, statusCode: 200 })
+            return res.status(200).json({ lastTags });
         } catch (error) {
-            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
+            console.log(error)
+            return res.status(500).json({ message: "Что-то пошло не так" });
         }
     };
 
@@ -125,18 +85,18 @@ export class PostService {
                 },
                 (err, post) => {
                     if (err) {
-                        return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
+                        return res.status(500).json({ message: "Что-то пошло не так" });
                     }
 
                     if (!post) {
-                        return res.status(404).json({ message: "Статья не найдена", statusCode: 404 })
+                        return res.status(404).json({ message: "Статья не найдена" })
                     }
 
-                    return res.status(200).json({ post, statusCode: 200 })
+                    return res.status(200).json({ post })
                 }
             ).populate("user");
         } catch (error) {
-            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
+            return res.status(500).json({ message: "Что-то пошло не так" });
         }
     };
 
@@ -156,18 +116,18 @@ export class PostService {
                 },
                 (err, doc) => {
                     if (err) {
-                        return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
+                        return res.status(500).json({ message: "Что-то пошло не так" });
                     }
 
                     if (!doc) {
-                        return res.status(404).json({ message: "Статья не найдена", statusCode: 404 })
+                        return res.status(404).json({ message: "Статья не найдена" })
                     }
 
-                    return res.status(200).json({ message: "Статья успешно удалена", statusCode: 200 })
+                    return res.status(200).json({ message: "Статья успешно удалена" })
                 }
             );
         } catch (error) {
-            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
+            return res.status(500).json({ message: "Что-то пошло не так" });
         }
     };
 
@@ -183,9 +143,9 @@ export class PostService {
 
             const post = await doc.save();
 
-            return res.status(200).json({ post, statusCode: 200 })
+            return res.status(200).json({ post })
         } catch (error) {
-            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
+            return res.status(500).json({ message: "Что-то пошло не так" });
         }
     };
 
@@ -207,9 +167,9 @@ export class PostService {
                 }
             );
 
-            return res.status(200).json({ message: "Статья успешно изменена", statusCode: 200 })
+            return res.status(200).json({ message: "Статья успешно изменена" })
         } catch (error) {
-            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
+            return res.status(500).json({ message: "Что-то пошло не так" });
         }
     };
 }

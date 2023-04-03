@@ -20,8 +20,6 @@ postsRouter.get("/tags/lasts", postController.getLastTags.bind(postController));
 
 postsRouter.get("/posts/all", postController.findAll.bind(postController));
 
-postsRouter.get("/posts/tag/:id", postController.findByPageLikeTag.bind(postController));
-
 postsRouter.get("/posts", postController.findByPage.bind(postController));
 
 postsRouter.get("/posts/:id", postController.findOneById.bind(postController));

@@ -6,9 +6,9 @@ export async function handleFullNameUpdate(props) {
     }).exec();
 
     if (!user) {
-        return props.res.status(404).json({ message: "Пользователь не найден", statusCode: 404 })
+        return props.res.status(404).json({ message: "Пользователь не найден" })
     }
 
     const { passwordHash, ...userData } = user._doc;
-    return props.res.status(200).json({ userData, message: "Логин успешно изменен", statusCode: 200 })
+    return props.res.status(200).json({ userData, message: "Логин успешно изменен" })
 }

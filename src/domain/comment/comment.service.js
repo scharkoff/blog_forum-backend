@@ -12,9 +12,9 @@ export class CommentService {
                 .populate("post")
                 .exec();
 
-            return res.status(200).json({ comments, statusCode: 200 })
+            return res.status(200).json({ comments })
         } catch (error) {
-            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
+            return res.status(500).json({ message: "Что-то пошло не так" });
         }
     };
 
@@ -27,9 +27,9 @@ export class CommentService {
 
             comments = comments.slice(0, 5).reverse();
 
-            return res.status(200).json({ comments, statusCode: 200 })
+            return res.status(200).json({ comments })
         } catch (error) {
-            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
+            return res.status(500).json({ message: "Что-то пошло не так" });
         }
     };
 
@@ -48,20 +48,20 @@ export class CommentService {
                 { $inc: { commentsCount: 1 } },
                 (err, doc) => {
                     if (err) {
-                        return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
+                        return res.status(500).json({ message: "Что-то пошло не так" });
                     }
 
                     if (!doc) {
-                        return res.status(404).json({ message: "Запись не найдена", statusCode: 404 })
+                        return res.status(404).json({ message: "Запись не найдена" })
                     }
                 }
             );
 
             const comment = await docComment.save();
 
-            return res.status(200).json({ comment, statusCode: 200 })
+            return res.status(200).json({ comment })
         } catch (error) {
-            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
+            return res.status(500).json({ message: "Что-то пошло не так" });
         }
     };
 
@@ -74,11 +74,11 @@ export class CommentService {
                 { $inc: { commentsCount: -1 } },
                 (err, doc) => {
                     if (err) {
-                        return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
+                        return res.status(500).json({ message: "Что-то пошло не так" });
                     }
 
                     if (!doc) {
-                        return res.status(404).json({ message: "Запись не найдена", statusCode: 404 })
+                        return res.status(404).json({ message: "Запись не найдена" })
                     }
                 }
             );
@@ -89,18 +89,18 @@ export class CommentService {
                 },
                 (err, doc) => {
                     if (!doc) {
-                        return res.status(404).json({ message: "Комментарий не найден", statusCode: 404 })
+                        return res.status(404).json({ message: "Комментарий не найден" })
                     }
 
                     if (err) {
-                        return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
+                        return res.status(500).json({ message: "Что-то пошло не так" });
                     }
 
-                    return res.status(200).json({ message: "Комментарий успешно удален", statusCode: 200 })
+                    return res.status(200).json({ message: "Комментарий успешно удален" })
                 }
             );
         } catch (error) {
-            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
+            return res.status(500).json({ message: "Что-то пошло не так" });
         }
     };
 
@@ -117,18 +117,18 @@ export class CommentService {
                 },
                 (err, doc) => {
                     if (!doc) {
-                        return res.status(404).json({ message: "Комментарий не найден", statusCode: 404 })
+                        return res.status(404).json({ message: "Комментарий не найден" })
                     }
 
                     if (err) {
-                        return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
+                        return res.status(500).json({ message: "Что-то пошло не так" });
                     }
 
-                    return res.status(200).json({ message: "Комментарий успешно изменен", statusCode: 200 })
+                    return res.status(200).json({ message: "Комментарий успешно изменен" })
                 }
             );
         } catch (error) {
-            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
+            return res.status(500).json({ message: "Что-то пошло не так" });
         }
     };
 

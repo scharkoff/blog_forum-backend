@@ -25,7 +25,7 @@ export class AuthService {
             const checkNewUserData = await UserModel.findOne({ email: req.body.email });
 
             if (checkNewUserData) {
-                return res.status(400).json({ message: "Данная почта уже используется", statusCode: 400 });
+                return res.status(400).json({ message: "Данная почта уже используется" });
             }
 
             const user = await doc.save();
@@ -42,9 +42,9 @@ export class AuthService {
 
             const { passwordHash, ...userData } = user._doc;
 
-            return res.status(200).json({ userData, token, statusCode: 200 });
+            return res.status(200).json({ userData, token });
         } catch (error) {
-            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
+            return res.status(500).json({ message: "Что-то пошло не так" });
         }
     };
 
@@ -54,7 +54,7 @@ export class AuthService {
             const user = await UserModel.findOne({ email: req.body.email });
 
             if (!user) {
-                return res.status(400).json({ message: "Неверный логин или пароль!", statusCode: 400 });
+                return res.status(400).json({ message: "Неверный логин или пароль!" });
             }
 
             const isValid = await bcrypt.compare(
@@ -63,7 +63,7 @@ export class AuthService {
             );
 
             if (!isValid) {
-                return res.status(400).json({ message: "Неверный логин или пароль!", statusCode: 400 });
+                return res.status(400).json({ message: "Неверный логин или пароль!" });
             }
 
             const token = jwt.sign(
@@ -78,9 +78,9 @@ export class AuthService {
 
             const { passwordHash, ...userData } = user._doc;
 
-            return res.status(200).json({ userData, token, statusCode: 200 });
+            return res.status(200).json({ userData, token });
         } catch (error) {
-            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
+            return res.status(500).json({ message: "Что-то пошло не так" });
         }
     };
 
@@ -90,14 +90,14 @@ export class AuthService {
             const user = await UserModel.findById(req.userId);
 
             if (!user) {
-                return res.status(404).json({ message: "Пользователь не найден!", statusCode: 404 })
+                return res.status(404).json({ message: "Пользователь не найден!" })
             }
 
             const { passwordHash, ...userData } = user._doc;
 
-            return res.status(200).json({ userData, statusCode: 200 });
+            return res.status(200).json({ userData });
         } catch (error) {
-            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
+            return res.status(500).json({ message: "Что-то пошло не так" });
         }
     };
 }

@@ -33,5 +33,5 @@ export function userUpdateValidation(req, res, next) {
             });
     }
 
-    return res.status(400).json({ message: "Неправильный формат запроса", statusCode: 400 });
+    return res.status(400).json({ message: "Неправильный формат запроса" });
 }

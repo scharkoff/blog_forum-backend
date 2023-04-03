@@ -11,9 +11,9 @@ export async function handlePasswordUpdate(props) {
     }).exec();
 
     if (!user) {
-        return props.res.status(404).json({ message: "Пользователь не найден", statusCode: 404 })
+        return props.res.status(404).json({ message: "Пользователь не найден" })
     }
 
     const { passwordHash, ...userData } = user._doc;
-    return props.res.status(200).json({ userData, message: "Пароль успешно изменен", statusCode: 200 })
+    return props.res.status(200).json({ userData, message: "Пароль успешно изменен" })
 }

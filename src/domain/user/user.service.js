@@ -16,9 +16,9 @@ export class UserService {
         try {
             const users = await UserModel.find().exec();
 
-            return res.status(200).json({ users, statusCode: 200 })
+            return res.status(200).json({ users })
         } catch (error) {
-            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
+            return res.status(500).json({ message: "Что-то пошло не так" });
         }
     };
 
@@ -28,13 +28,13 @@ export class UserService {
             const user = await UserModel.findById({ _id: mongoose.Types.ObjectId(userId), }).exec();
 
             if (!user) {
-                return res.status(404).json({ message: "Пользователь не найден", statusCode: 404 })
+                return res.status(404).json({ message: "Пользователь не найден" })
             }
 
-            return res.status(200).json({ user, statusCode: 200 })
+            return res.status(200).json({ user })
 
         } catch (error) {
-            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
+            return res.status(500).json({ message: "Что-то пошло не так" });
         }
     }
 
@@ -48,11 +48,11 @@ export class UserService {
                 },
                 async (err, doc) => {
                     if (err) {
-                        return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
+                        return res.status(500).json({ message: "Что-то пошло не так" });
                     }
 
                     if (!doc) {
-                        return res.status(404).json({ message: "Пользователь не найден", statusCode: 404 })
+                        return res.status(404).json({ message: "Пользователь не найден" })
                     }
 
                     await CommentModel.find({
@@ -67,12 +67,12 @@ export class UserService {
                         .deleteMany();
 
 
-                    return res.status(200).json({ message: "Пользователь успешно удален", statusCode: 200 });
+                    return res.status(200).json({ message: "Пользователь успешно удален" });
                 }
             );
 
         } catch (error) {
-            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
+            return res.status(500).json({ message: "Что-то пошло не так" });
         }
     };
 
@@ -100,10 +100,10 @@ export class UserService {
                 return handleRankUpdate({ userId, rank: req.body.rank, res })
             }
 
-            return res.status(400).json({ message: "Неправильный формат запроса", statusCode: 400 })
+            return res.status(400).json({ message: "Неправильный формат запроса" })
 
         } catch (error) {
-            return res.status(500).json({ message: "Что-то пошло не так", statusCode: 500 });
+            return res.status(500).json({ message: "Что-то пошло не так" });
         }
     }
 }
