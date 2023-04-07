@@ -6,7 +6,7 @@ import UserModel from '../user/entity/User.js';
 const defaultAvatar = '../../../uploads/noavatar.png';
 
 export class AuthService {
-  constructor() {}
+  constructor() { }
 
   async register(req, res) {
     try {
@@ -32,8 +32,6 @@ export class AuthService {
           .json({ message: 'Данная почта уже используется' });
       }
 
-      console.log(' USER DOC', doc);
-
       const user = await doc.save();
 
       const token = jwt.sign(
@@ -50,7 +48,6 @@ export class AuthService {
 
       return res.status(200).json({ userData, token });
     } catch (error) {
-      console.log(error);
       return res.status(500).json({ message: 'Что-то пошло не так' });
     }
   }

@@ -62,7 +62,6 @@ export class CommentService {
 
       return res.status(200).json({ comment });
     } catch (error) {
-      console.log(error)
       return res.status(500).json({ message: 'Что-то пошло не так' });
     }
   }
@@ -104,7 +103,6 @@ export class CommentService {
         },
       );
     } catch (error) {
-      console.log(error)
       return res.status(500).json({ message: 'Что-то пошло не так' });
     }
   }

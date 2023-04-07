@@ -45,31 +45,13 @@ export class PostService {
     }
   }
 
-  async getLastTags(req, res) {
-    try {
-      const posts = await PostModel.find().exec();
-
-      const tags = posts
-        .reverse()
-        .map((obj) => obj.tags)
-        .flat()
-        .filter((tag) => tag);
-
-      const lastTags = [...new Set(tags)].slice(0, 5);
-
-      return res.status(200).json({ lastTags });
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({ message: 'Что-то пошло не так' });
-    }
-  }
-
   async findOneById(req, res) {
     try {
       const postId = req.params.id;
       const comments = await CommentModel.find({
         post: mongoose.Types.ObjectId(postId),
-      }).populate('user')
+      })
+        .populate('user')
         .populate('post')
         .exec();
 
@@ -168,6 +150,24 @@ export class PostService {
       );
 
       return res.status(200).json({ message: 'Статья успешно изменена' });
+    } catch (error) {
+      return res.status(500).json({ message: 'Что-то пошло не так' });
+    }
+  }
+
+  async getLastTags(req, res) {
+    try {
+      const posts = await PostModel.find().exec();
+
+      const tags = posts
+        .reverse()
+        .map((obj) => obj.tags)
+        .flat()
+        .filter((tag) => tag);
+
+      const lastTags = [...new Set(tags)].slice(0, 5);
+
+      return res.status(200).json({ lastTags });
     } catch (error) {
       return res.status(500).json({ message: 'Что-то пошло не так' });
     }
