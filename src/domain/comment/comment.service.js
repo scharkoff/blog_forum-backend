@@ -3,7 +3,7 @@ import PostModel from '../post/entity/Post.js';
 import mongoose from 'mongoose';
 
 export class CommentService {
-  constructor() {}
+  constructor() { }
 
   async findAll(req, res) {
     try {
@@ -57,10 +57,12 @@ export class CommentService {
         },
       );
 
-      const comment = await docComment.save();
+      const newComment = await docComment.save();
+      const comment = await CommentModel.populate(newComment, { path: 'user' });
 
       return res.status(200).json({ comment });
     } catch (error) {
+      console.log(error)
       return res.status(500).json({ message: 'Что-то пошло не так' });
     }
   }
@@ -102,6 +104,7 @@ export class CommentService {
         },
       );
     } catch (error) {
+      console.log(error)
       return res.status(500).json({ message: 'Что-то пошло не так' });
     }
   }
@@ -110,27 +113,26 @@ export class CommentService {
     try {
       const commentId = mongoose.Types.ObjectId(req.body.commentId);
 
-      CommentModel.findOneAndUpdate(
+      const comment = await CommentModel.findOneAndUpdate(
         {
           _id: commentId,
         },
         {
           text: req.body.text,
         },
-        (err, doc) => {
-          if (!doc) {
-            return res.status(404).json({ message: 'Комментарий не найден' });
-          }
+        {
+          new: true
+        }
+      )
+        .populate('user')
+        .populate('post')
+        .exec();
 
-          if (err) {
-            return res.status(500).json({ message: 'Что-то пошло не так' });
-          }
+      if (!comment) {
+        return res.status(404).json({ message: 'Комментарий не найден' });
+      }
 
-          return res
-            .status(200)
-            .json({ message: 'Комментарий успешно изменен' });
-        },
-      );
+      return res.status(200).json({ comment });
     } catch (error) {
       return res.status(500).json({ message: 'Что-то пошло не так' });
     }

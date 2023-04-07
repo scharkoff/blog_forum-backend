@@ -5,7 +5,7 @@ import { createSortOptions } from './handlers/sorttype.handler.js';
 import { createFilterOptions } from './handlers/filter.handler.js';
 
 export class PostService {
-  constructor() {}
+  constructor() { }
 
   async findAll(req, res) {
     try {
@@ -69,7 +69,9 @@ export class PostService {
       const postId = req.params.id;
       const comments = await CommentModel.find({
         post: mongoose.Types.ObjectId(postId),
-      });
+      }).populate('user')
+        .populate('post')
+        .exec();
 
       PostModel.findOneAndUpdate(
         {
@@ -91,7 +93,7 @@ export class PostService {
             return res.status(404).json({ message: 'Статья не найдена' });
           }
 
-          return res.status(200).json({ post });
+          return res.status(200).json({ post, comments });
         },
       ).populate('user');
     } catch (error) {
