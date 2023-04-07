@@ -9,27 +9,27 @@ export const usersRouter = Router();
 const userController = new UserController();
 
 usersRouter.get(
-  '/users',
-  checkAuth,
-  userController.findAll.bind(userController),
+    '/users',
+    checkAuth,
+    userController.findAll.bind(userController),
 );
 
 usersRouter.get(
-  '/users/:id',
-  checkAuth,
-  userController.findOneById.bind(userController),
+    '/users/:id',
+    checkAuth,
+    userController.findOneById.bind(userController),
 );
 
 usersRouter.delete(
-  '/users/:id',
-  checkAuth,
-  userController.delete.bind(userController),
+    '/users/:id',
+    checkAuth,
+    userController.delete.bind(userController),
 );
 
 usersRouter.patch(
-  '/users/:id',
-  checkAuth,
-  userUpdateValidation,
-  handleValidationErrors,
-  userController.updateByCondition.bind(userController),
+    '/users/:id',
+    checkAuth,
+    userUpdateValidation,
+    handleValidationErrors,
+    userController.updateByCondition.bind(userController),
 );

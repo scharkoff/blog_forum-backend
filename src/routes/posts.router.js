@@ -9,11 +9,11 @@ export const postsRouter = Router();
 const postController = new PostController();
 
 postsRouter.post(
-  '/posts',
-  checkAuth,
-  postCreateValidation,
-  handleValidationErrors,
-  postController.create.bind(postController),
+    '/posts',
+    checkAuth,
+    postCreateValidation,
+    handleValidationErrors,
+    postController.create.bind(postController),
 );
 
 postsRouter.get('/tags/lasts', postController.getLastTags.bind(postController));
@@ -25,15 +25,15 @@ postsRouter.get('/posts', postController.findByPage.bind(postController));
 postsRouter.get('/posts/:id', postController.findOneById.bind(postController));
 
 postsRouter.delete(
-  '/posts/:id',
-  checkAuth,
-  postController.remove.bind(postController),
+    '/posts/:id',
+    checkAuth,
+    postController.remove.bind(postController),
 );
 
 postsRouter.patch(
-  '/posts/:id',
-  checkAuth,
-  postCreateValidation,
-  handleValidationErrors,
-  postController.update.bind(postController),
+    '/posts/:id',
+    checkAuth,
+    postCreateValidation,
+    handleValidationErrors,
+    postController.update.bind(postController),
 );

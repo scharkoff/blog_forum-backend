@@ -32,6 +32,7 @@
   <li>MongoDB</li>
   <li>JWT</li>
   <li>Multer</li>
+  <li>Jest</li>
 </ul>
 
 `Tools:`

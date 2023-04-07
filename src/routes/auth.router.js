@@ -10,21 +10,21 @@ export const authRouter = Router();
 const authController = new AuthController();
 
 authRouter.post(
-  '/auth/login',
-  loginValidation,
-  handleValidationErrors,
-  authController.login.bind(authController),
+    '/auth/login',
+    loginValidation,
+    handleValidationErrors,
+    authController.login.bind(authController),
 );
 
 authRouter.post(
-  '/auth/register',
-  registerValidation,
-  handleValidationErrors,
-  authController.register.bind(authController),
+    '/auth/register',
+    registerValidation,
+    handleValidationErrors,
+    authController.register.bind(authController),
 );
 
 authRouter.get(
-  '/auth/me',
-  checkAuth,
-  authController.getMe.bind(authController),
+    '/auth/me',
+    checkAuth,
+    authController.getMe.bind(authController),
 );

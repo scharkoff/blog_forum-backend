@@ -2,36 +2,36 @@ import cors from 'cors';
 import { getConnection } from './configs/config.js';
 
 export class App {
-  constructor(express) {
-    this._express = express;
-    this._app = express();
+    constructor(express) {
+        this._express = express;
+        this._app = express();
 
-    this._app.use(express.json());
-    this._app.use(cors());
-    getConnection();
-  }
-
-  listen(port) {
-    if (!Number.isInteger(port)) {
-      throw new TypeError('Port must be number');
+        this._app.use(express.json());
+        this._app.use(cors());
+        getConnection();
     }
 
-    this._app.listen(process.env.PORT || port, (err) => {
-      if (err) {
-        return console.log(err);
-      }
+    listen(port) {
+        if (!Number.isInteger(port)) {
+            throw new TypeError('Port must be number');
+        }
 
-      console.log('Server started');
-    });
-  }
+        this._app.listen(process.env.PORT || port, (err) => {
+            if (err) {
+                return console.log(err);
+            }
 
-  useRoutes(routes) {
-    if (!Array.isArray(routes)) {
-      throw new TypeError('Routes must be array');
+            console.log('Server started');
+        });
     }
 
-    routes.forEach((route) => {
-      this._app.use(route);
-    });
-  }
+    useRoutes(routes) {
+        if (!Array.isArray(routes)) {
+            throw new TypeError('Routes must be array');
+        }
+
+        routes.forEach((route) => {
+            this._app.use(route);
+        });
+    }
 }

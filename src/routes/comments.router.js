@@ -8,32 +8,32 @@ export const commentsRouter = Router();
 const commentController = new CommentController();
 
 commentsRouter.post(
-  '/comments/:id',
-  checkAuth,
-  handleValidationErrors,
-  commentController.create.bind(commentController),
+    '/comments/:id',
+    checkAuth,
+    handleValidationErrors,
+    commentController.create.bind(commentController),
 );
 
 commentsRouter.get(
-  '/comments',
-  commentController.findAll.bind(commentController),
+    '/comments',
+    commentController.findAll.bind(commentController),
 );
 
 commentsRouter.get(
-  '/comments/lasts',
-  commentController.findLasts.bind(commentController),
+    '/comments/lasts',
+    commentController.findLasts.bind(commentController),
 );
 
 commentsRouter.delete(
-  '/comments/:id',
-  checkAuth,
-  handleValidationErrors,
-  commentController.delete.bind(commentController),
+    '/comments/:id',
+    checkAuth,
+    handleValidationErrors,
+    commentController.delete.bind(commentController),
 );
 
 commentsRouter.patch(
-  '/comments/:id',
-  checkAuth,
-  handleValidationErrors,
-  commentController.update.bind(commentController),
+    '/comments/:id',
+    checkAuth,
+    handleValidationErrors,
+    commentController.update.bind(commentController),
 );

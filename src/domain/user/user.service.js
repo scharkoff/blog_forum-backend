@@ -9,7 +9,7 @@ import { handleAvatarUpdate } from './handlers/avatar.handler.js';
 import { handleRankUpdate } from './handlers/rank.handler.js';
 
 export class UserService {
-  constructor() {}
+  constructor() { }
 
   async findAll(req, res) {
     try {
@@ -29,7 +29,9 @@ export class UserService {
       }).exec();
 
       if (!user) {
-        return res.status(404).json({ message: 'Пользователь не найден' });
+        return res
+          .status(404)
+          .json({ message: 'Пользователь не найден' });
       }
 
       return res.status(200).json({ user });
@@ -48,11 +50,15 @@ export class UserService {
         },
         async (err, doc) => {
           if (err) {
-            return res.status(500).json({ message: 'Что-то пошло не так' });
+            return res
+              .status(500)
+              .json({ message: 'Что-то пошло не так' });
           }
 
           if (!doc) {
-            return res.status(404).json({ message: 'Пользователь не найден' });
+            return res
+              .status(404)
+              .json({ message: 'Пользователь не найден' });
           }
 
           await CommentModel.find({
@@ -113,7 +119,9 @@ export class UserService {
         return handleRankUpdate({ userId, rank: req.body.rank, res });
       }
 
-      return res.status(400).json({ message: 'Неправильный формат запроса' });
+      return res
+        .status(400)
+        .json({ message: 'Неправильный формат запроса' });
     } catch (error) {
       return res.status(500).json({ message: 'Что-то пошло не так' });
     }
