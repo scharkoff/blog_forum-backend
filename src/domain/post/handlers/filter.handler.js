@@ -1,4 +1,4 @@
-export function createFilterOptions(searchValue, tagValue) {
+export default function createFilterOptions(searchValue, tagValue) {
     let filterOptions = {};
 
     if (searchValue && tagValue) {

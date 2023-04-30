@@ -1,5 +1,6 @@
+import defaultAvatar from '../../../utils/consts.js';
 import UserModel from '../../user/entity/User.js';
-import { AuthService, defaultAvatar } from '../auth.service.js';
+import AuthService from '../auth.service.js';
 
 const authService = new AuthService();
 
@@ -63,5 +64,4 @@ describe('Get me module', () => {
             message: 'Пользователь не найден!',
         });
     });
-
 });

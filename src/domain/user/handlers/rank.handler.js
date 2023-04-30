@@ -1,6 +1,6 @@
 import UserModel from '../entity/User.js';
 
-export async function handleRankUpdate(props) {
+export default async function handleRankUpdate(props) {
     const user = await UserModel.findByIdAndUpdate(props.userId, {
         rank: props.rank,
     }).exec();

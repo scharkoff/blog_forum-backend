@@ -1,12 +1,17 @@
-import jwt from 'jsonwebtoken';
+import validateAccessToken from '../domain/token/handlers/validateAccessToken.js';
 
 export default (req, res, next) => {
-    const token = (req.headers.authorization || '').replace(/Bearer\s?/, '');
+    const accessToken = req.cookies['token'];
 
-    if (token) {
+    if (accessToken) {
         try {
-            const decoded = jwt.verify(token, 'secrethash123');
-            req.userId = decoded._id;
+            const userData = validateAccessToken(accessToken);
+
+            if (!userData) {
+                return res.status(403).json({ message: 'Нет доступа' });
+            }
+
+            req.userId = userData.id;
 
             next();
         } catch (error) {

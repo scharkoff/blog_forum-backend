@@ -1,9 +1,9 @@
-import { avatarValidation } from '../domain/user/validations/avatar.validation.js';
-import { emailValidation } from '../domain/user/validations/email.validation.js';
-import { fullNameValidation } from '../domain/user/validations/fullName.validation.js';
-import { passwordValidation } from '../domain/user/validations/password.validation.js';
+import avatarValidation from '../domain/user/validations/avatar.validation.js';
+import emailValidation from '../domain/user/validations/email.validation.js';
+import fullNameValidation from '../domain/user/validations/fullName.validation.js';
+import passwordValidation from '../domain/user/validations/password.validation.js';
 
-export function userUpdateValidation(req, res, next) {
+export default function userUpdateValidation(req, res, next) {
     if (req.body.fullName) {
         return Promise.all(
             fullNameValidation.map((rule) => rule.run(req)),

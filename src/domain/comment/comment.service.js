@@ -2,7 +2,7 @@ import CommentModel from './entity/Comment.js';
 import PostModel from '../post/entity/Post.js';
 import mongoose from 'mongoose';
 
-export class CommentService {
+export default class CommentService {
     constructor() {}
 
     async findAll(req, res) {
@@ -35,7 +35,7 @@ export class CommentService {
 
     async create(req, res) {
         try {
-            const docComment = new CommentModel({
+            const doc = new CommentModel({
                 text: req.body.text,
                 user: req.userId,
                 avatarUrl: req.body.avatarUrl,
@@ -61,7 +61,8 @@ export class CommentService {
                 },
             );
 
-            const newComment = await docComment.save();
+            const newComment = await doc.save();
+
             const comment = await CommentModel.populate(newComment, {
                 path: 'user',
             });

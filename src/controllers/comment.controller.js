@@ -1,6 +1,6 @@
-import { CommentService } from '../domain/comment/comment.service.js';
+import CommentService from '../domain/comment/comment.service.js';
 
-export class CommentController {
+export default class CommentController {
     constructor() {
         this._commentService = new CommentService();
     }

@@ -1,6 +1,6 @@
 import { PostService } from '../domain/post/post.service.js';
 
-export class PostController {
+export default class PostController {
     constructor() {
         this._postService = new PostService();
     }

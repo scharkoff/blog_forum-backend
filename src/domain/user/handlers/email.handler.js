@@ -1,6 +1,6 @@
 import UserModel from '../entity/User.js';
 
-export async function handleEmailUpdate(props) {
+export default async function handleEmailUpdate(props) {
     const checkNewUserEmail = await UserModel.findOne({ email: props.email });
 
     if (checkNewUserEmail) {

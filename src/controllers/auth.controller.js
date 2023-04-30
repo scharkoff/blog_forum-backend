@@ -1,6 +1,6 @@
-import { AuthService } from '../domain/auth/auth.service.js';
+import AuthService from '../domain/auth/auth.service.js';
 
-export class AuthController {
+export default class AuthController {
     constructor() {
         this._authService = new AuthService();
     }
@@ -11,6 +11,14 @@ export class AuthController {
 
     async login(req, res) {
         return await this._authService.login(req, res);
+    }
+
+    async logout(req, res) {
+        return await this._authService.logout(req, res);
+    }
+
+    async refresh(req, res) {
+        return await this._authService.refresh(req, res);
     }
 
     async getMe(req, res) {

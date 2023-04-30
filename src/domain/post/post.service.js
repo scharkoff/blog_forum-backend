@@ -1,8 +1,8 @@
 import PostModel from './entity/Post.js';
 import CommentModel from '../comment/entity/Comment.js';
 import mongoose from 'mongoose';
-import { createSortOptions } from './handlers/sorttype.handler.js';
-import { createFilterOptions } from './handlers/filter.handler.js';
+import createSortOptions from './handlers/sorttype.handler.js';
+import createFilterOptions from './handlers/filter.handler.js';
 
 export class PostService {
     constructor() {}

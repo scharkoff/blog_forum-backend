@@ -4,7 +4,7 @@ import fs from 'fs';
 
 import checkAuth from '../middlewares/checkAuth.js';
 
-export const multerRouter = Router();
+const multerRouter = Router();
 
 multerRouter.use('/uploads', express.static('uploads'));
 
@@ -27,3 +27,5 @@ multerRouter.post('/upload', checkAuth, upload.single('image'), (req, res) => {
         url: `/uploads/${req.file.originalname}`,
     });
 });
+
+export default multerRouter;

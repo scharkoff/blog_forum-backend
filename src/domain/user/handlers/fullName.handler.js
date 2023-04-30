@@ -1,6 +1,6 @@
 import UserModel from '../entity/User.js';
 
-export async function handleFullNameUpdate(props) {
+export default async function handleFullNameUpdate(props) {
     const user = await UserModel.findByIdAndUpdate(props.userId, {
         fullName: props.fullName,
     }).exec();
