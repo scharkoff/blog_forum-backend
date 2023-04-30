@@ -13,7 +13,7 @@ export default class App {
         this._app.use(express.json());
         this._app.use(
             cors({
-                origin: 'http://localhost:3001',
+                origin: process.env.ORIGIN,
                 credentials: true,
             }),
         );

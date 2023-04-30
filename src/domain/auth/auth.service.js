@@ -7,7 +7,7 @@ import validateRefreshToken from '../../domain/token/handlers/validateRefreshTok
 export default class AuthService {
     _tokenService = new TokenService();
 
-    constructor() {}
+    constructor() { }
 
     async register(req, res) {
         try {
@@ -43,7 +43,7 @@ export default class AuthService {
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true,
                 secure: true,
-                domain: 'localhost',
+                domain: process.env.DOMAIN,
                 sameSite: 'none',
             });
 
@@ -86,7 +86,7 @@ export default class AuthService {
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true,
                 secure: true,
-                domain: 'localhost',
+                domain: process.env.DOMAIN,
                 sameSite: 'none',
             });
 
@@ -147,7 +147,7 @@ export default class AuthService {
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true,
                 secure: true,
-                domain: 'localhost',
+                domain: process.env.DOMAIN,
                 sameSite: 'none',
             });
 
