@@ -1,6 +1,6 @@
 import { UserService } from '../domain/user/user.service.js';
 
-export class UserController {
+export default class UserController {
     constructor() {
         this._userService = new UserService();
     }

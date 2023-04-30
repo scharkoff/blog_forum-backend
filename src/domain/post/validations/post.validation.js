@@ -1,6 +1,6 @@
 import { body } from 'express-validator';
 
-export const postCreateValidation = [
+const postCreateValidation = [
     body('title', 'Введите заголовок статьи! Минимальное кол-во символов: 3')
         .isLength({ min: 3 })
         .isString(),
@@ -10,3 +10,5 @@ export const postCreateValidation = [
     body('tags', 'Неверный формат тегов!').optional().isArray(),
     body('imageUrl', 'Неверная ссылка на изображение!').optional().isString(),
 ];
+
+export default postCreateValidation;

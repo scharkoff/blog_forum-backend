@@ -1,15 +1,15 @@
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import UserModel from '../../user/entity/User.js';
-import { AuthService, defaultAvatar } from '../auth.service.js';
+import AuthService from '../auth.service.js';
+import defaultAvatar from '../../../utils/consts.js';
+import TokenService from '../../../services/token/token.service.js';
 
 const authService = new AuthService();
 
 jest.mock('bcrypt');
-jest.mock('jsonwebtoken');
 
 describe('Login module', () => {
-    let req, res, mockUser, mockUserData, mockToken;
+    let req, res, mockUser, mockUserData, mockTokens, mockTokenService;
 
     beforeEach(() => {
         req = {
@@ -23,6 +23,7 @@ describe('Login module', () => {
         res = {
             status: jest.fn().mockReturnThis(),
             json: jest.fn(),
+            cookie: jest.fn(),
         };
 
         mockUserData = {
@@ -39,7 +40,14 @@ describe('Login module', () => {
             _doc: mockUserData,
         };
 
-        mockToken = 'mockToken';
+        mockTokens = {
+            accessToken: 'mockAccessToken',
+            refreshToken: 'mockRefreshToken',
+        };
+
+        mockTokenService = {
+            generateTokens: jest.fn(),
+        };
     });
 
     afterEach(() => {
@@ -48,27 +56,42 @@ describe('Login module', () => {
 
     it('Should return user data and token', async () => {
         jest.spyOn(UserModel, 'findOne').mockResolvedValue(mockUser);
-
         bcrypt.compare.mockResolvedValueOnce(true);
-        jwt.sign.mockReturnValueOnce(mockToken);
+        const authService = new AuthService(mockTokenService);
+        authService._tokenService.generateTokens = jest
+            .fn()
+            .mockReturnValue(mockTokens);
+        TokenService.prototype.save = jest.fn();
 
         await authService.login(req, res);
 
-        expect(jwt.sign).toHaveBeenCalledWith(
-            { _id: 'mockUserId' },
-            'secrethash123',
-            { expiresIn: '30d' },
+        expect(authService._tokenService.generateTokens).toHaveBeenCalledWith({
+            id: mockUser._id,
+        });
+        expect(TokenService.prototype.save).toHaveBeenCalledWith(
+            mockUser._id,
+            mockTokens.refreshToken,
         );
         expect(bcrypt.compare).toHaveBeenCalledWith(
             req.body.password,
             'mockPasswordHash',
         );
+        expect(res.cookie).toHaveBeenCalledWith(
+            'refreshToken',
+            mockTokens.refreshToken,
+            {
+                maxAge: 30 * 24 * 60 * 60 * 1000,
+                httpOnly: true,
+                secure: true,
+                domain: 'localhost',
+                sameSite: 'none',
+            },
+        );
         expect(res.status).toHaveBeenCalledWith(200);
-
         const { passwordHash, ...userData } = mockUser._doc;
         expect(res.json).toHaveBeenCalledWith({
             userData,
-            token: mockToken,
+            accessToken: mockTokens.accessToken,
         });
     });
 

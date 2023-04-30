@@ -1,5 +1,5 @@
 import { body } from 'express-validator';
 
-export const emailValidation = [
-    body('email', 'Неверный формат почты!').isEmail(),
-];
+const emailValidation = [body('email', 'Неверный формат почты!').isEmail()];
+
+export default emailValidation;

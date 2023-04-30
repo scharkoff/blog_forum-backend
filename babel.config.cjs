@@ -1,12 +1,22 @@
 module.exports = {
-  presets: [
+  "presets": [
     [
       '@babel/preset-env',
       {
-        targets: {
-          node: 'current'
+        "targets": {
+          "esmodules": true,
+          "node": true
         }
       }
     ]
+  ],
+
+  "plugins": [
+    ["module-resolver", {
+      "root": ["./src"],
+      "alias": {
+        "@middlewares": "./middlewares"
+      }
+    }]
   ]
 };

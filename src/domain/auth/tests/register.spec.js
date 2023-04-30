@@ -1,12 +1,12 @@
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import UserModel from '../../user/entity/User.js';
-import { AuthService, defaultAvatar } from '../auth.service.js';
+import AuthService from '../auth.service.js';
+import defaultAvatar from '../../../utils/consts.js';
+import TokenService from '../../../services/token/token.service.js';
 
 const authService = new AuthService();
 
 jest.mock('bcrypt');
-jest.mock('jsonwebtoken');
 
 describe('Register module', () => {
     let req, res, mockUser, mockUserData, mockToken;
@@ -48,24 +48,21 @@ describe('Register module', () => {
 
     it('Should register new user with token', async () => {
         jest.spyOn(UserModel, 'findOne').mockResolvedValue(null);
+        jest.fn('save').mockResolvedValue(mockUser);
         UserModel.prototype.save = jest.fn().mockResolvedValue(mockUser);
         bcrypt.genSalt.mockResolvedValueOnce('mockSalt');
         bcrypt.hash.mockResolvedValueOnce('mockPasswordHash');
-        jwt.sign.mockReturnValueOnce(mockToken);
+        TokenService.prototype.generateTokens = jest
+            .fn()
+            .mockResolvedValue(mockToken);
 
         await authService.register(req, res);
 
         expect(bcrypt.genSalt).toHaveBeenCalledWith(10);
         expect(bcrypt.hash).toHaveBeenCalledWith(req.body.password, 'mockSalt');
-        expect(jwt.sign).toHaveBeenCalledWith(
-            {
-                _id: 'mockUserId',
-            },
-            'secrethash123',
-            {
-                expiresIn: '30d',
-            },
-        );
+        expect(TokenService.prototype.generateTokens).toHaveBeenCalledWith({
+            id: mockUser._id,
+        });
         expect(res.status).toHaveBeenCalledWith(200);
 
         const { passwordHash, ...userData } = mockUser._doc;

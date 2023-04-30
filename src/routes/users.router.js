@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import { UserController } from '../controllers/user.controller.js';
+import UserController from '../controllers/user.controller.js';
 import checkAuth from '../middlewares/checkAuth.js';
 import handleValidationErrors from '../middlewares/handleValidationErrors.js';
-import { userUpdateValidation } from '../middlewares/user-update.validation.js';
+import userUpdateValidation from '../middlewares/user-update.validation.js';
 
-export const usersRouter = Router();
+const usersRouter = Router();
 
 const userController = new UserController();
 
@@ -33,3 +33,5 @@ usersRouter.patch(
     handleValidationErrors,
     userController.updateByCondition.bind(userController),
 );
+
+export default usersRouter;

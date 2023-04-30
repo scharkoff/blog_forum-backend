@@ -1,8 +1,10 @@
 import { body } from 'express-validator';
 
-export const avatarValidation = [
+const avatarValidation = [
     body('avatarUrl', 'Неверная ссылка на изображение!')
         .optional()
         .isString()
         .isLength({ min: 1 }),
 ];
+
+export default avatarValidation;

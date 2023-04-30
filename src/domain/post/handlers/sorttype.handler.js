@@ -1,4 +1,4 @@
-export function createSortOptions(sortType) {
+export default function createSortOptions(sortType) {
     const sortOptions = {};
 
     if (sortType === 'new') {

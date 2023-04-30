@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import checkAuth from '../middlewares/checkAuth.js';
 import handleValidationErrors from '../middlewares/handleValidationErrors.js';
-import { postCreateValidation } from '../domain/post/validations/post.validation.js';
-import { PostController } from '../controllers/post.controller.js';
+import postCreateValidation from '../domain/post/validations/post.validation.js';
+import PostController from '../controllers/post.controller.js';
 
-export const postsRouter = Router();
+const postsRouter = Router();
 
 const postController = new PostController();
 
@@ -37,3 +37,5 @@ postsRouter.patch(
     handleValidationErrors,
     postController.update.bind(postController),
 );
+
+export default postsRouter;

@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import UserModel from '../entity/User.js';
 
-export async function handlePasswordUpdate(props) {
+export default async function handlePasswordUpdate(props) {
     const password = props.password,
         salt = await bcrypt.genSalt(10),
         phash = await bcrypt.hash(password, salt);

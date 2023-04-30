@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { CommentController } from '../controllers/comment.controller.js';
+import CommentController from '../controllers/comment.controller.js';
 import checkAuth from '../middlewares/checkAuth.js';
 import handleValidationErrors from '../middlewares/handleValidationErrors.js';
 
-export const commentsRouter = Router();
+const commentsRouter = Router();
 
 const commentController = new CommentController();
 
@@ -37,3 +37,5 @@ commentsRouter.patch(
     handleValidationErrors,
     commentController.update.bind(commentController),
 );
+
+export default commentsRouter;
