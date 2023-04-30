@@ -18,6 +18,7 @@ export default class App {
             }),
         );
         this._app.use(cookieParser());
+        this._app.set("trust proxy", 1);
 
         this._routes = routes;
         this._routes.forEach((route) => {
