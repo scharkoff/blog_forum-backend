@@ -83,7 +83,7 @@ describe('Login module', () => {
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 httpOnly: true,
                 secure: true,
-                domain: process.env.RENDER_EXTERNAL_HOSTNAME,
+                domain: process.env.DOMAIN,
                 sameSite: 'none',
             },
         );
