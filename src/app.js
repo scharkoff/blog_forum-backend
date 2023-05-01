@@ -13,7 +13,7 @@ export default class App {
         this._app.use(express.json());
         this._app.use(
             cors({
-                origin: process.env.ORIGIN,
+                origin: process.env.RENDER_EXTERNAL_URL,
                 credentials: true,
             }),
         );
