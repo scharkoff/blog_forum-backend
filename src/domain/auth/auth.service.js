@@ -7,7 +7,7 @@ import validateRefreshToken from '../../domain/token/handlers/validateRefreshTok
 export default class AuthService {
     _tokenService = new TokenService();
 
-    constructor() { }
+    constructor() {}
 
     async register(req, res) {
         try {

@@ -1,7 +1,7 @@
 import validateAccessToken from '../domain/token/handlers/validateAccessToken.js';
 
 export default (req, res, next) => {
-    const accessToken = req.cookies['token'];
+    const accessToken = req.headers.authorization?.split(' ')[1];
 
     if (accessToken) {
         try {
