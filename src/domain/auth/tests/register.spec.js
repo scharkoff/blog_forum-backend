@@ -1,7 +1,6 @@
 import bcrypt from 'bcrypt';
 import UserModel from '../../user/entity/User.js';
 import AuthService from '../auth.service.js';
-import defaultAvatar from '../../../utils/consts.js';
 import TokenService from '../../../services/token/token.service.js';
 
 const authService = new AuthService();
@@ -30,7 +29,7 @@ describe('Register module', () => {
             rank: 'user',
             email: req.body.email,
             fullName: req.body.fullName,
-            avatarUrl: defaultAvatar,
+            avatarUrl: 'mockUserAvatarUrl',
             passwordHash: 'mockPasswordHash',
         };
 

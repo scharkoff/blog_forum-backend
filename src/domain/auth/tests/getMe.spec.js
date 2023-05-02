@@ -1,4 +1,3 @@
-import defaultAvatar from '../../../utils/consts.js';
 import UserModel from '../../user/entity/User.js';
 import AuthService from '../auth.service.js';
 
@@ -27,7 +26,6 @@ describe('Get me module', () => {
             rank: 'user',
             email: req.body.email,
             fullName: req.body.fullName,
-            avatarUrl: defaultAvatar,
             passwordHash: 'mockPasswordHash',
         };
 
