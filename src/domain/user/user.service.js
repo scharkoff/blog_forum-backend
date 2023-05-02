@@ -7,9 +7,10 @@ import handlePasswordUpdate from './handlers/password.handler.js';
 import handleEmailUpdate from './handlers/email.handler.js';
 import handleAvatarUpdate from './handlers/avatar.handler.js';
 import handleRankUpdate from './handlers/rank.handler.js';
+import ServerUnexpectedError from '../../errors/ServerUnexpectedError.js';
 
 export class UserService {
-    constructor() {}
+    constructor() { }
 
     async findAll(req, res) {
         try {
@@ -17,7 +18,7 @@ export class UserService {
 
             return res.status(200).json({ users });
         } catch (error) {
-            return res.status(500).json({ message: 'Что-то пошло не так' });
+            return ServerUnexpectedError(res);
         }
     }
 
@@ -36,7 +37,7 @@ export class UserService {
 
             return res.status(200).json({ user });
         } catch (error) {
-            return res.status(500).json({ message: 'Что-то пошло не так' });
+            return ServerUnexpectedError(res);
         }
     }
 
@@ -75,7 +76,7 @@ export class UserService {
                 },
             );
         } catch (error) {
-            return res.status(500).json({ message: 'Что-то пошло не так' });
+            return ServerUnexpectedError(res);
         }
     }
 
@@ -123,7 +124,7 @@ export class UserService {
                 .status(400)
                 .json({ message: 'Неправильный формат запроса' });
         } catch (error) {
-            return res.status(500).json({ message: 'Что-то пошло не так' });
+            return ServerUnexpectedError(res);
         }
     }
 }

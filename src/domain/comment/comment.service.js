@@ -1,9 +1,10 @@
 import CommentModel from './entity/Comment.js';
 import PostModel from '../post/entity/Post.js';
 import mongoose from 'mongoose';
+import ServerUnexpectedError from '../../errors/ServerUnexpectedError.js';
 
 export default class CommentService {
-    constructor() {}
+    constructor() { }
 
     async findAll(req, res) {
         try {
@@ -14,7 +15,7 @@ export default class CommentService {
 
             return res.status(200).json({ comments });
         } catch (error) {
-            return res.status(500).json({ message: 'Что-то пошло не так' });
+            return ServerUnexpectedError(res);
         }
     }
 
@@ -29,7 +30,7 @@ export default class CommentService {
 
             return res.status(200).json({ comments });
         } catch (error) {
-            return res.status(500).json({ message: 'Что-то пошло не так' });
+            return ServerUnexpectedError(res);
         }
     }
 
@@ -69,7 +70,7 @@ export default class CommentService {
 
             return res.status(200).json({ comment });
         } catch (error) {
-            return res.status(500).json({ message: 'Что-то пошло не так' });
+            return ServerUnexpectedError(res);
         }
     }
 
@@ -118,7 +119,7 @@ export default class CommentService {
                 },
             );
         } catch (error) {
-            return res.status(500).json({ message: 'Что-то пошло не так' });
+            return ServerUnexpectedError(res);
         }
     }
 
@@ -149,7 +150,7 @@ export default class CommentService {
 
             return res.status(200).json({ comment });
         } catch (error) {
-            return res.status(500).json({ message: 'Что-то пошло не так' });
+            return ServerUnexpectedError(res);
         }
     }
 }

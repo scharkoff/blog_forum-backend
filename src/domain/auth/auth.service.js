@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import UserModel from '../user/entity/User.js';
 import TokenService from '../../domain/token/token.service.js';
 import validateRefreshToken from '../../domain/token/handlers/validateRefreshToken.js';
+import ServerUnexpectedError from '../../errors/ServerUnexpectedError.js';
 
 export default class AuthService {
     _tokenService = new TokenService();
@@ -52,7 +53,7 @@ export default class AuthService {
                 .status(200)
                 .json({ userData, accessToken: tokens.accessToken });
         } catch (error) {
-            return res.status(500).json({ message: 'Что-то пошло не так' });
+            return ServerUnexpectedError(res);
         }
     }
 
@@ -94,7 +95,7 @@ export default class AuthService {
                 .status(200)
                 .json({ userData, accessToken: tokens.accessToken });
         } catch (error) {
-            return res.status(500).json({ message: 'Что-то пошло не так' });
+            return ServerUnexpectedError(res);
         }
     }
 
@@ -110,7 +111,7 @@ export default class AuthService {
                 .status(200)
                 .json({ message: 'Пользователь успешно вышел из аккаунта' });
         } catch (error) {
-            return res.status(500).json({ message: 'Что-то пошло не так' });
+            return ServerUnexpectedError(res);
         }
     }
 
@@ -150,7 +151,7 @@ export default class AuthService {
 
             return res.status(200).json({ accessToken: tokens.accessToken });
         } catch (error) {
-            return res.status(500).json({ message: 'Что-то пошло не так' });
+            return ServerUnexpectedError(res);
         }
     }
 
@@ -168,7 +169,7 @@ export default class AuthService {
 
             return res.status(200).json({ userData });
         } catch (error) {
-            return res.status(500).json({ message: 'Что-то пошло не так' });
+            return ServerUnexpectedError(res);
         }
     }
 }

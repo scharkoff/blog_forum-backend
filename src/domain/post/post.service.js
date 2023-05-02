@@ -3,9 +3,10 @@ import CommentModel from '../comment/entity/Comment.js';
 import mongoose from 'mongoose';
 import createSortOptions from './handlers/sorttype.handler.js';
 import createFilterOptions from './handlers/filter.handler.js';
+import ServerUnexpectedError from '../../errors/ServerUnexpectedError.js';
 
 export class PostService {
-    constructor() {}
+    constructor() { }
 
     async findAll(req, res) {
         try {
@@ -13,7 +14,7 @@ export class PostService {
 
             return res.status(200).json({ posts });
         } catch (error) {
-            return res.status(500).json({ message: 'Что-то пошло не так' });
+            return ServerUnexpectedError(res);
         }
     }
 
@@ -43,7 +44,7 @@ export class PostService {
 
             return res.status(200).json({ posts, postsCount });
         } catch (error) {
-            return res.status(500).json({ message: 'Что-то пошло не так' });
+            return ServerUnexpectedError(res);
         }
     }
 
@@ -85,7 +86,7 @@ export class PostService {
                 },
             ).populate('user');
         } catch (error) {
-            return res.status(500).json({ message: 'Что-то пошло не так' });
+            return ServerUnexpectedError(res);
         }
     }
 
@@ -122,7 +123,7 @@ export class PostService {
                 },
             );
         } catch (error) {
-            return res.status(500).json({ message: 'Что-то пошло не так' });
+            return ServerUnexpectedError(res);
         }
     }
 
@@ -140,7 +141,7 @@ export class PostService {
 
             return res.status(200).json({ post });
         } catch (error) {
-            return res.status(500).json({ message: 'Что-то пошло не так' });
+            return ServerUnexpectedError(res);
         }
     }
 
@@ -163,7 +164,7 @@ export class PostService {
 
             return res.status(200).json({ message: 'Статья успешно изменена' });
         } catch (error) {
-            return res.status(500).json({ message: 'Что-то пошло не так' });
+            return ServerUnexpectedError(res);
         }
     }
 
@@ -181,7 +182,7 @@ export class PostService {
 
             return res.status(200).json({ lastTags });
         } catch (error) {
-            return res.status(500).json({ message: 'Что-то пошло не так' });
+            return ServerUnexpectedError(res);
         }
     }
 }
