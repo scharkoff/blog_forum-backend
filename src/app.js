@@ -1,7 +1,7 @@
 import cors from 'cors';
-import getConnection from './configs/config.js';
+import getConnection from 'configs/config.js';
 import cookieParser from 'cookie-parser';
-import routes from './routes/index.js';
+import routes from 'routes/index.js';
 
 export default class App {
     _routes = [];

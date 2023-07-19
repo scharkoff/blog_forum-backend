@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import UserModel from '../../user/entity/User.js';
 import AuthService from '../auth.service.js';
-import TokenService from '../../../services/token/token.service.js';
+import TokenService from '../../token/token.service.js';
 
 const authService = new AuthService();
 

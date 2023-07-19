@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import UserController from '../controllers/user.controller.js';
-import checkAuth from '../middlewares/checkAuth.js';
-import handleValidationErrors from '../middlewares/handleValidationErrors.js';
-import userUpdateValidation from '../middlewares/user-update.validation.js';
+import UserController from 'controllers/user.controller.js';
+import checkAuth from 'middlewares/checkAuth.js';
+import handleValidationErrors from 'middlewares/handleValidationErrors.js';
+import userUpdateValidation from 'middlewares/user-update.validation.js';
 
 const usersRouter = Router();
 

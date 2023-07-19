@@ -1,4 +1,4 @@
-import { PostService } from '../domain/post/post.service.js';
+import { PostService } from 'domain/post/post.service.js';
 
 export default class PostController {
     constructor() {

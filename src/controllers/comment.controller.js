@@ -1,4 +1,4 @@
-import CommentService from '../domain/comment/comment.service.js';
+import CommentService from 'domain/comment/comment.service.js';
 
 export default class CommentController {
     constructor() {

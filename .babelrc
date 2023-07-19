@@ -1,0 +1,30 @@
+{
+    "presets": [
+        [
+            "@babel/preset-env",
+            {
+                "targets": {
+                    "node": "current"
+                }
+            }
+        ],
+
+        [
+            "minify",
+            {
+                "mangle": {
+                    "topLevel": true
+                }
+            }
+        ]
+    ],
+
+    "plugins": [
+        [
+            "module-resolver",
+            {
+                "root": ["./src"]
+            }
+        ]
+    ]
+}

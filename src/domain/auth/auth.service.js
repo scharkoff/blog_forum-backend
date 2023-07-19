@@ -1,13 +1,13 @@
 import bcrypt from 'bcrypt';
 import UserModel from '../user/entity/User.js';
-import TokenService from '../../domain/token/token.service.js';
-import validateRefreshToken from '../../domain/token/handlers/validateRefreshToken.js';
+import TokenService from 'domain/token/token.service.js';
+import validateRefreshToken from 'domain/token/handlers/validateRefreshToken.js';
 
 export default class AuthService {
     _tokenService = new TokenService();
     _defaultAvatar = '/uploads/noavatar.png';
 
-    constructor() { }
+    constructor() {}
 
     async register(req, res) {
         try {

@@ -1,4 +1,4 @@
-import { UserService } from '../domain/user/user.service.js';
+import { UserService } from 'domain/user/user.service.js';
 
 export default class UserController {
     constructor() {

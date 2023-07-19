@@ -1,0 +1,1 @@
+"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.default=void 0;var _expressValidator=require("express-validator"),_default=(a,b,c)=>{const d=(0,_expressValidator.validationResult)(a);return d.isEmpty()?void c():b.status(400).json(d.array())};exports.default=_default;

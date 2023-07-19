@@ -1,6 +1,6 @@
-import PostModel from './entity/Post.js';
-import CommentModel from '../comment/entity/Comment.js';
 import mongoose from 'mongoose';
+import PostModel from 'domain/post/entity/Post.js';
+import CommentModel from 'domain/comment/entity/Comment.js';
 import createSortOptions from './handlers/sorttype.handler.js';
 import createFilterOptions from './handlers/filter.handler.js';
 

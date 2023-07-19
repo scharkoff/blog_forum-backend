@@ -1,0 +1,1 @@
+"use strict";var _express=_interopRequireDefault(require("express")),_app=_interopRequireDefault(require("./app.js")),_dotenv=_interopRequireDefault(require("dotenv"));function _interopRequireDefault(a){return a&&a.__esModule?a:{default:a}}_dotenv.default.config();const app=new _app.default(_express.default);app.listen(4444);

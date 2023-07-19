@@ -1,6 +1,6 @@
+import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 import TokenModel from './entity/Token.js';
-import mongoose from 'mongoose';
 
 export default class TokenService {
     generateTokens(payload) {

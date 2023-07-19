@@ -1,8 +1,8 @@
+import checkAuth from 'middlewares/checkAuth.js';
+import handleValidationErrors from 'middlewares/handleValidationErrors.js';
+import postCreateValidation from 'domain/post/validations/post.validation.js';
+import PostController from 'controllers/post.controller.js';
 import { Router } from 'express';
-import checkAuth from '../middlewares/checkAuth.js';
-import handleValidationErrors from '../middlewares/handleValidationErrors.js';
-import postCreateValidation from '../domain/post/validations/post.validation.js';
-import PostController from '../controllers/post.controller.js';
 
 const postsRouter = Router();
 

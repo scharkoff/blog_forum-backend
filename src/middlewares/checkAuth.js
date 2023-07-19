@@ -1,4 +1,4 @@
-import validateAccessToken from '../domain/token/handlers/validateAccessToken.js';
+import validateAccessToken from 'domain/token/handlers/validateAccessToken.js';
 
 export default (req, res, next) => {
     const accessToken = req.headers.authorization?.split(' ')[1];

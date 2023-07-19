@@ -3,10 +3,10 @@
     "version": "1.0.0",
     "description": "",
     "main": "index.js",
-    "type": "module",
     "scripts": {
-        "start": "node index.js",
-        "dev": "nodemon index.js",
+        "start": "npm run build && node ./dist/index.js",
+        "dev": "nodemon --exec babel-node ./src/index.js",
+        "build": "babel src -d dist --presets minify",
         "test": "jest src/**/*.spec.js",
         "prettier": "prettier --write \"**/*.js\""
     },
@@ -35,10 +35,13 @@
         "nodemon": "^2.0.19"
     },
     "devDependencies": {
-        "@babel/core": "^7.21.5",
-        "@babel/preset-env": "^7.21.4",
-        "@babel/register": "^7.21.0",
+        "@babel/cli": "^7.22.9",
+        "@babel/core": "^7.22.9",
+        "@babel/node": "^7.22.6",
+        "@babel/preset-env": "^7.22.9",
+        "@babel/register": "^7.22.5",
         "babel-plugin-module-resolver": "^5.0.0",
+        "babel-preset-minify": "^0.5.2",
         "eslint": "^8.37.0",
         "eslint-config-prettier": "^8.8.0",
         "eslint-config-standard": "^17.0.0",

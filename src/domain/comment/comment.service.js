@@ -1,6 +1,6 @@
-import CommentModel from './entity/Comment.js';
-import PostModel from '../post/entity/Post.js';
 import mongoose from 'mongoose';
+import CommentModel from 'domain/comment/entity/Comment.js';
+import PostModel from 'domain/post/entity/Post.js';
 
 export default class CommentService {
     constructor() {}

@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import AuthController from '../controllers/auth.controller.js';
-import handleValidationErrors from '../middlewares/handleValidationErrors.js';
-import checkAuth from '../middlewares/checkAuth.js';
-import loginValidation from '../domain/auth/validations/login.validation.js';
-import registerValidation from '../domain/auth/validations/register.validation.js';
+import AuthController from 'controllers/auth.controller.js';
+import handleValidationErrors from 'middlewares/handleValidationErrors.js';
+import checkAuth from 'middlewares/checkAuth.js';
+import loginValidation from 'domain/auth/validations/login.validation.js';
+import registerValidation from 'domain/auth/validations/register.validation.js';
 
 const authRouter = Router();
 
