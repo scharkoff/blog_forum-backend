@@ -19,5 +19,5 @@ export default async function handlePasswordUpdate(props) {
     const { passwordHash, ...userData } = user._doc;
     return props.res
         .status(200)
-        .json({ userData, message: 'Пароль успешно изменен' });
+        .json({ data: userData, message: 'Пароль успешно изменен' });
 }

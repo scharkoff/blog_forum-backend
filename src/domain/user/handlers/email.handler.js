@@ -22,5 +22,5 @@ export default async function handleEmailUpdate(props) {
     const { passwordHash, ...userData } = user._doc;
     return props.res
         .status(200)
-        .json({ userData, message: 'Почта успешно изменена' });
+        .json({ data: userData, message: 'Почта успешно изменена' });
 }

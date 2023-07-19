@@ -14,5 +14,5 @@ export default async function handleFullNameUpdate(props) {
     const { passwordHash, ...userData } = user._doc;
     return props.res
         .status(200)
-        .json({ userData, message: 'Логин успешно изменен' });
+        .json({ data: userData, message: 'Логин успешно изменен' });
 }

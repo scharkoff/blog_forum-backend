@@ -14,5 +14,5 @@ export default async function handleRankUpdate(props) {
     const { passwordHash, ...userData } = user._doc;
     return props.res
         .status(200)
-        .json({ userData, message: 'Ранг успешно изменен' });
+        .json({ data: userData, message: 'Ранг успешно изменен' });
 }

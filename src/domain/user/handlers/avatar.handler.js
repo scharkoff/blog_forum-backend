@@ -14,5 +14,5 @@ export default async function handleAvatarUpdate(props) {
     const { passwordHash, ...userData } = user._doc;
     return props.res
         .status(200)
-        .json({ userData, message: 'Аватар успешно изменен' });
+        .json({ data: userData, message: 'Аватар успешно изменен' });
 }
