@@ -28,11 +28,6 @@ export default class AuthService {
                 activationLink,
             });
 
-            await this._mailService.sendActivationEmail(
-                req.body.email,
-                `${process.env.API_URL}/activate/${activationLink}`,
-            );
-
             const checkNewUserData = await UserModel.findOne({
                 email: req.body.email,
             });
@@ -44,6 +39,11 @@ export default class AuthService {
             }
 
             const user = await doc.save();
+
+            await this._mailService.sendActivationEmail(
+                req.body.email,
+                `${process.env.API_URL}/activate/${activationLink}`,
+            );
 
             const tokens = this._tokenService.generateTokens({ id: user._id });
 
@@ -58,14 +58,12 @@ export default class AuthService {
 
             const { passwordHash, ...userData } = user._doc;
 
-            return res
-                .status(200)
-                .json({
-                    userData,
-                    accessToken: tokens.accessToken,
-                    message:
-                        'Успешная регистрация. Для активиции профиля перейдите по ссылке из письма',
-                });
+            return res.status(200).json({
+                userData,
+                accessToken: tokens.accessToken,
+                message:
+                    'Успешная регистрация. Для активиции профиля перейдите по ссылке из письма',
+            });
         } catch (error) {
             console.log(error);
             return res.status(500).json({ message: 'Что-то пошло не так' });
@@ -100,17 +98,17 @@ export default class AuthService {
         try {
             const user = await UserModel.findOne({ email: req.body.email });
 
+            if (!user) {
+                return res
+                    .status(400)
+                    .json({ message: 'Неверный логин или пароль!' });
+            }
+
             if (!user.isActivated) {
                 return res.status(400).json({
                     message:
                         'Аккаунт не активирован. Проверьте почтовый ящик и перейдите по ссылке из письма',
                 });
-            }
-
-            if (!user) {
-                return res
-                    .status(400)
-                    .json({ message: 'Неверный логин или пароль!' });
             }
 
             const isValid = await bcrypt.compare(
