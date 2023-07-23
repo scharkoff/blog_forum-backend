@@ -2,9 +2,12 @@ import bcrypt from 'bcrypt';
 import UserModel from '../user/entity/User.js';
 import TokenService from 'domain/token/token.service.js';
 import validateRefreshToken from 'domain/token/handlers/validateRefreshToken.js';
+import MailService from 'domain/mail/mail.service.js';
+import { v4 } from 'uuid';
 
 export default class AuthService {
     _tokenService = new TokenService();
+    _mailService = new MailService();
     _defaultAvatar = '/uploads/noavatar.png';
 
     constructor() {}
@@ -14,6 +17,7 @@ export default class AuthService {
             const password = req.body.password;
             const salt = await bcrypt.genSalt(10);
             const phash = await bcrypt.hash(password, salt);
+            const activationLink = v4();
 
             const doc = new UserModel({
                 rank: 'user',
@@ -21,7 +25,13 @@ export default class AuthService {
                 fullName: req.body.fullName,
                 avatarUrl: this._defaultAvatar,
                 passwordHash: phash,
+                activationLink,
             });
+
+            await this._mailService.sendActivationEmail(
+                req.body.email,
+                `${process.env.API_URL}/activate/${activationLink}`,
+            );
 
             const checkNewUserData = await UserModel.findOne({
                 email: req.body.email,
@@ -50,7 +60,37 @@ export default class AuthService {
 
             return res
                 .status(200)
-                .json({ userData, accessToken: tokens.accessToken });
+                .json({
+                    userData,
+                    accessToken: tokens.accessToken,
+                    message:
+                        'Успешная регистрация. Для активиции профиля перейдите по ссылке из письма',
+                });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({ message: 'Что-то пошло не так' });
+        }
+    }
+
+    async activate(req, res) {
+        try {
+            const user = await UserModel.findOne({
+                activationLink: req.params.link,
+            });
+
+            if (!user) {
+                return res
+                    .status(404)
+                    .json({ message: 'Пользователь не найден' });
+            }
+
+            user.isActivated = true;
+
+            await user.save();
+
+            return res.redirect(
+                `${process.env.ORIGIN}/activate/${req.params.link}`,
+            );
         } catch (error) {
             return res.status(500).json({ message: 'Что-то пошло не так' });
         }
@@ -59,6 +99,13 @@ export default class AuthService {
     async login(req, res) {
         try {
             const user = await UserModel.findOne({ email: req.body.email });
+
+            if (!user.isActivated) {
+                return res.status(400).json({
+                    message:
+                        'Аккаунт не активирован. Проверьте почтовый ящик и перейдите по ссылке из письма',
+                });
+            }
 
             if (!user) {
                 return res

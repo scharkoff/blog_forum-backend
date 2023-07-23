@@ -9,6 +9,10 @@ export default class AuthController {
         return await this._authService.register(req, res);
     }
 
+    async activate(req, res) {
+        return await this._authService.activate(req, res);
+    }
+
     async login(req, res) {
         return await this._authService.login(req, res);
     }

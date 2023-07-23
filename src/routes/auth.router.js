@@ -27,6 +27,8 @@ authRouter.get('/auth/logout', authController.logout.bind(authController));
 
 authRouter.get('/auth/refresh', authController.refresh.bind(authController));
 
+authRouter.get('/activate/:link', authController.activate.bind(authController));
+
 authRouter.get(
     '/auth/me',
     checkAuth,
