@@ -1,1 +1,0 @@
-"use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.default=createSortOptions;function createSortOptions(a){const b={};return"new"===a&&(b.createdAt=-1),"popular"===a&&(b.viewsCount=-1),b}
