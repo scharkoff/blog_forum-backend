@@ -5,7 +5,7 @@ import routes from 'routes/index.js';
 import typeDefs from 'graphql/schema.js';
 import resolvers from 'graphql/resolvers.js';
 import { ApolloServer } from '@apollo/server';
-import { startStandaloneServer } from '@apollo/server/standalone';
+import { expressMiddleware } from '@apollo/server/express4';
 
 export default class App {
     _routes = [];
@@ -42,18 +42,16 @@ export default class App {
             resolvers,
             introspection: true,
         });
-        const { url } = await startStandaloneServer(server, {
-            listen: { port: 4000 },
-        });
-
-        console.log(`🚀  Graphql server ready at: ${url}`);
+        await server.start();
+        this._app.use('/graphql', expressMiddleware(server));
+        console.log(`🚀  Graphql server ready at /graphql`);
 
         this._app.listen(process.env.PORT || port, (err) => {
             if (err) {
                 return console.log(err);
             }
 
-            console.log(`Server started on port ${port}`);
+            console.log(`🚀  Server started on port ${port}`);
         });
     }
 }
